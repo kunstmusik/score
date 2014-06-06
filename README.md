@@ -1,4 +1,4 @@
-# score - Version 0.1
+# score 
 
 A Clojure library for music score generation.  A note is a list of values and
 a list of notes is a list of lists.
