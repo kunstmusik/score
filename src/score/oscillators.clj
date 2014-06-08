@@ -1,6 +1,8 @@
 (ns ^{:author "Steven Yi"
       :doc "Oscillator Generators, based on Andre Bartetzki's CMask" } 
-  score.oscillators)
+  score.oscillators
+  (:require [score.core :refer [wrap-generator]])
+  )
 
 (def PI2 (* Math/PI 2.0))
 
@@ -15,10 +17,11 @@
   ([freq]
    (sin freq 0.0))
   ([freq phase]
-   (fn [t]
-    (+ 0.5 
-       (* 0.5 
-          (Math/sin (* PI2 (get-phase phase t freq))))))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (+ 0.5 
+          (* 0.5 
+             (Math/sin (* PI2 (get-phase phase t (freqfn t))))))))))
 
 
 (defn cos 
@@ -28,10 +31,11 @@
   ([freq]
    (sin freq 0.0))
   ([freq phase]
-   (fn [t]
-    (+ 0.5 
-       (* 0.5 
-          (Math/cos (* PI2 (get-phase phase t freq))))))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (+ 0.5 
+          (* 0.5 
+             (Math/cos (* PI2 (get-phase phase t (freqfn t))))))))))
 
 
 (defn saw-up 
@@ -41,9 +45,10 @@
   ([freq]
    (saw-up freq 0.0))
   ([freq phase]
-  (fn [t]
-    (Math/abs (rem (get-phase phase t freq) 1.0))
-    )))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (Math/abs (rem (get-phase phase t (freqfn t)) 1.0))
+       ))))
 
 (defn saw-down 
   "Sawtooth (downwards) generator"
@@ -52,8 +57,9 @@
   ([freq]
    (saw-up freq 0.0))
   ([freq phase]
-   (fn [t]
-     (- 1.0 (Math/abs (rem (get-phase phase t freq) 1.0))))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (- 1.0 (Math/abs (rem (get-phase phase t (freqfn t)) 1.0)))))))
 
 (defn power-up
   "Power up generator"
@@ -64,9 +70,10 @@
   ([freq phase]
    (power-up freq phase 1.0))
   ([freq phase exponent]
-   (fn [t]
-     (Math/pow (Math/abs (rem (get-phase phase t freq) 1.0))
-               (Math/pow 2.0 exponent)))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (Math/pow (Math/abs (rem (get-phase phase t (freqfn t)) 1.0))
+                 (Math/pow 2.0 exponent))))))
 
 (defn power-down 
   "Power down generator"
@@ -77,9 +84,10 @@
   ([freq phase]
    (power-down freq phase 1.0))
   ([freq phase exponent]
-   (fn [t]
-     (Math/pow (- 1.0 (Math/abs (rem (get-phase phase t freq) 1.0)))
-               (Math/pow 2.0 exponent)))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (Math/pow (- 1.0 (Math/abs (rem (get-phase phase t (freqfn t)) 1.0)))
+                 (Math/pow 2.0 exponent))))))
 
 (defn square 
   "Square-wave generator"
@@ -88,9 +96,10 @@
   ([freq]
    (square freq 0.0))
   ([freq phase]
-   (fn [t]
-     (let [x (Math/abs (rem (get-phase phase t freq) 1.0))]  
-       (if (< x 0.5) 1.0 0.0)))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (let [x (Math/abs (rem (get-phase phase t (freqfn t)) 1.0))]  
+         (if (< x 0.5) 1.0 0.0))))))
 
 (defn triangle 
   "Triangle-wave generator"
@@ -99,8 +108,10 @@
   ([freq]
    (triangle freq 0.0))
   ([freq phase]
-   (fn [t]
-     (let [x (Math/abs (rem (get-phase phase t freq) 1.0))]  
-       (if (< x 0.5)
-         (* 2 x)
-         (* 2 (- 1.0 x)))))))
+   (let [freqfn (wrap-generator freq)] 
+     (fn [t]
+       (let [x (Math/abs (rem (get-phase phase t (freqfn t)) 1.0))]  
+         (if (< x 0.5)
+           (* 2 x)
+           (* 2 (- 1.0 x))))))))
+
