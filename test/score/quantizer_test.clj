@@ -1,4 +1,4 @@
-(ns score.quantize-test
+(ns score.quantizer-test
   (:require [clojure.test :refer :all]
             [score.oscillators :refer :all]
             [score.mask :refer :all]
