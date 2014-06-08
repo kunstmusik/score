@@ -20,11 +20,15 @@
   (map pch->sco  (apply pch-interval-seq pch intervals)))
 
 (defn- score-arg  [a]
-  (if (number? a)
-    (repeat a)
-    a))
+  (cond (seq? a) a 
+    (fn? a) (repeatedly a)
+    :default (repeat a)))
 
-(defn gen-notes [& fields]
+(defn gen-notes 
+  "Generate notes by assembling sequences together into notes. 
+  If a constant value is given, it will be wrapped with (repeat).
+  If a no-arg function is given, it will be wrpaped with (repeatedly)."
+  [& fields]
   (let [pfields  (map score-arg fields)]
     (apply map (fn [& args] args) pfields)))
 
@@ -61,7 +65,10 @@
     (fn? f) f
     :else (const f))) 
 
-(defn gen-score2 
+(defn gen-notes2 
+  "Generate notes with time-based generator functions. This score generation method
+  is based on CMask. Given fields should be single-arg functions that generate a 
+  value based-on time argument."
   [start dur & fields]
   (let [ gens (map wrap-generator fields) 
         [instrfn startfn & r] gens]
@@ -74,4 +81,6 @@
           (recur (+ cur-start xt) (conj retval note)))
         retval))))
 
-
+(defn gen-score2
+  [start dur & fields] 
+  (format-sco (apply gen-notes2 start dur fields)))

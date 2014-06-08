@@ -10,10 +10,9 @@
 
 (defn gen-test-score 
   [instr fn1]
-  (format-sco 
-    (gen-score2 0.0 2.0 
-                (const instr) (const 0.1) 
-                fn1)))
+  (gen-score2 0.0 2.0 
+              (const instr) (const 0.1) 
+              fn1))
 
 (println "[OSCILLATOR TEST]\n")
 (println "\n[TEST BPF LINEAR]")

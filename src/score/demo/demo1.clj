@@ -29,7 +29,7 @@
               ))
 
 (println "[TEST 2]")
-(println  (format-sco score2))
+(println  score2)
 
 (def score3
   (gen-score2 0.0 10.0
@@ -44,16 +44,15 @@
               ))
 
 (println "[TEST 3]")
-(println (format-sco score3))
+(println score3)
 
 
 (println "[TEST 4]")
-(println (format-sco 
-           (gen-score2 0.0 10.0
-                       (const 4)
-                       (const 0.5)
-                       (gauss 0.5 0.2)
-                       (cauchy 0.1 0.5)
-                       (beta 0.1 0.1)
-                       (weibull 0.5 2.0)
-                       )))
+(println (gen-score2 0.0 10.0
+                     (const 4)
+                     (const 0.5)
+                     (gauss 0.5 0.2)
+                     (cauchy 0.1 0.5)
+                     (beta 0.1 0.1)
+                     (weibull 0.5 2.0)
+                     ))
