@@ -20,7 +20,7 @@
   (map pch->sco  (apply pch-interval-seq pch intervals)))
 
 (defn- score-arg  [a]
-  (if  (number? a)
+  (if (number? a)
     (repeat a)
     a))
 
@@ -55,14 +55,15 @@
       (+ low (* (Math/random) rng)) 
       )))
 
-
-
-(defn- wrap-generator [fields]
-  (map #(if (seq? %) (seq->gen %) %) fields))
+(defn wrap-generator [f]
+  (cond 
+    (seq? f) (seq->gen f) 
+    (fn? f) f
+    :else (const f))) 
 
 (defn gen-score2 
   [start dur & fields]
-  (let [ gens (wrap-generator fields) 
+  (let [ gens (map wrap-generator fields) 
         [instrfn startfn & r] gens]
     (loop [cur-start 0.0 
            retval []]
