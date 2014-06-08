@@ -5,13 +5,14 @@
 
 (defn find-points 
   [t pts]
-  (loop [[a & b] pts]
-    (if (seq? b)
-      (if (and (<= (first a) t) (> (ffirst b) t))
-        [a (first b)] 
-        (recur b))
-      [a nil]      
-      ) ))
+  (if (< t (ffirst pts))
+    [(first pts) nil] 
+    (loop [[a & b] pts]
+      (if (seq? b)
+        (if (and (<= (first a) t) (> (ffirst b) t))
+          [a (first b)] 
+          (recur b))
+        [a nil]))))
 
 (defn interp-linear 
   [t [x1 y1] [x2 y2]]
