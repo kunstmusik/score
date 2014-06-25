@@ -1,5 +1,7 @@
 (ns score.freq)
 
+;; Functions for keyword conversions to MIDI notenum
+
 (def note-vals {\C 0 \D 2 \E 4 \F 5 \G 7 \A 9 \B 11} )
 
 (defn- convert-modifier
@@ -27,3 +29,30 @@
     (+ note (* 12 (- 4 octave)) 60 (convert-modifier modifier)) 
     ))
 
+;; functions related to PCH format: [oct pch]
+
+(defn pch-add  [bpch interval]
+  (let  [scale-degrees 12
+         new-val  (+  (* scale-degrees  (first bpch))
+                     (second bpch) interval)]
+    [(quot new-val scale-degrees)
+     (rem new-val scale-degrees)]))
+
+(defn pch->sco  [[a b]]
+  (format "%d.%02d" a b ))
+
+(defn pch-interval-seq  [pch & intervals]
+  (reduce  (fn  [a b]  (conj a  (pch-add  (last a) b)))  [pch] intervals))
+
+(defn pch-interval-sco  [pch & intervals]
+  (map pch->sco  (apply pch-interval-seq pch intervals)))
+
+
+;; Conversion to Hz
+
+(defn hertz 
+  [a]
+  (cond 
+    (keyword? a) 
+    )
+  )

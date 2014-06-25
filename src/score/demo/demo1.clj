@@ -1,6 +1,7 @@
 (ns score.demo.demo1
   (:require 
     [score.core :refer :all]
+    [score.freq :refer :all]
     [score.probability :refer :all]
     [score.items :refer :all]
     ))
