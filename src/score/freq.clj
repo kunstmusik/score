@@ -1,5 +1,13 @@
 (ns score.freq)
 
+;; Functions for MIDI frequency
+
+(defn midi->freq
+  "Convert MIDI Note number to frequency in hertz"
+  [notenum]
+  
+  )
+
 ;; Functions for keyword conversions to MIDI notenum
 
 (def note-vals {\C 0 \D 2 \E 4 \F 5 \G 7 \A 9 \B 11} )
@@ -42,7 +50,7 @@
   (format "%d.%02d" a b ))
 
 (defn pch-interval-seq  [pch & intervals]
-  (reduce  (fn  [a b]  (conj a  (pch-add  (last a) b)))  [pch] intervals))
+  (reductions pch-add pch intervals))
 
 (defn pch-interval-sco  [pch & intervals]
   (map pch->sco  (apply pch-interval-seq pch intervals)))
@@ -53,6 +61,6 @@
 (defn hertz 
   [a]
   (cond 
-    (keyword? a) 
+    (keyword? a) (keyword->notenum a) 
     )
   )

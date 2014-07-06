@@ -10,3 +10,10 @@
     (is (= 70 (keyword->notenum :A#4)))
     
     ))
+
+(deftest pch-interval-seq-test
+  (testing "pch-interval-seq test"
+   
+    (is (= [[8 0] [8 2] [8 3] [8 1]]
+           (pch-interval-seq [8 0] 2 1 -2))) 
+    ))
