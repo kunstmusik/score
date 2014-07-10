@@ -2,13 +2,21 @@
   (:require [clojure.test :refer :all]
             [score.freq :refer :all]))
 
+(deftest midi->freq-test
+  (testing "midi->freq"
+    (is (= 440.0 (midi->freq 57)))  
+    (is (= 880.0 (midi->freq 69)))  
+    (is (= 440.0 (midi->freq (keyword->notenum :A3))))
+    (is (= 880.0 (midi->freq (keyword->notenum :A4))))
+    ))
+
 (deftest keyword->notenum-test
   (testing "keyword->notenum test"
+    (is (= 57 (keyword->notenum :A3)))
     (is (= 60 (keyword->notenum :C4)))
     (is (= 61 (keyword->notenum :C#4)))
     (is (= 70 (keyword->notenum :Bb4)))
     (is (= 70 (keyword->notenum :A#4)))
-    
     ))
 
 (deftest pch-interval-seq-test

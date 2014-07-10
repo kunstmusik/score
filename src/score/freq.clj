@@ -5,8 +5,8 @@
 (defn midi->freq
   "Convert MIDI Note number to frequency in hertz"
   [notenum]
-  
-  )
+  (* 440 (Math/pow 2.0 (/ (- notenum 57) 12))))
+
 
 ;; Functions for keyword conversions to MIDI notenum
 
@@ -34,7 +34,7 @@
         note (note-vals note-name)
         modifier (.substring sym-str 1 (- sym-len 1)) 
         octave (Integer/parseInt (.substring sym-str (- sym-len 1))) ]
-    (+ note (* 12 (- 4 octave)) 60 (convert-modifier modifier)) 
+    (+ note (* 12 (- octave 4)) 60 (convert-modifier modifier)) 
     ))
 
 ;; functions related to PCH format: [oct pch]
