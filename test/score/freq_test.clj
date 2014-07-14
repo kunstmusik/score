@@ -24,4 +24,12 @@
    
     (is (= [[8 0] [8 2] [8 3] [8 1]]
            (pch-interval-seq [8 0] 2 1 -2))) 
+    (is (= [[8 0] [8 2] [8 3] [8 1]]
+           (pch-interval-seq [8 0] [2 1 -2]))) 
+    (is (= [[8 0] [8 2]]
+           (pch-interval-seq [8 0] 2)))
+    (is (= [[8 0] [8 2]]
+           (pch-interval-seq [8 0] [2])))
+    (is (= [[8 0]]
+           (pch-interval-seq [8 0] [])))
     ))

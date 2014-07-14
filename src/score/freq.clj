@@ -49,8 +49,13 @@
 (defn pch->sco  [[a b]]
   (format "%d.%02d" a b ))
 
-(defn pch-interval-seq  [pch & intervals]
-  (reductions pch-add pch intervals))
+(defn pch-interval-seq  
+  ([pch x]
+   (if (sequential? x)
+     (reductions pch-add pch x)   
+     [pch (pch-add pch x)]))
+  ([pch x & intervals]
+   (pch-interval-seq pch (list* x intervals))))
 
 (defn pch-interval-sco  [pch & intervals]
   (map pch->sco  (apply pch-interval-seq pch intervals)))
