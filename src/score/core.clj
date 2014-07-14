@@ -4,7 +4,7 @@
     [score.util :refer [seq->gen]]))
 
 (defn- score-arg  [a]
-  (cond (seq? a) a 
+  (cond (sequential? a) a 
     (fn? a) (repeatedly a)
     :default (repeat a)))
 
@@ -15,6 +15,8 @@
   [& fields]
   (let [pfields  (map score-arg fields)]
     (apply map (fn [& args] args) pfields)))
+
+
 
 (defn format-sco 
   "Formats a list of notes into a Csound SCO string"
