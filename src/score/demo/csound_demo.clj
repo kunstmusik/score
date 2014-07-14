@@ -22,11 +22,8 @@ endin")
 
 (defn fire-sco [pt]
   (.InputMessage pt (gen-score2 0 10.0
-                             (const 1)
-                             (const 0.5)
-                             (const 0.4)
-                             (const "0.25")
-                             (const "8.00"))))
+                            1 0.5 0.4 "0.25" "8.00" 
+                            )))
 
 (comment
 
@@ -43,7 +40,7 @@ endin")
 
   ;; eval below to fire score
   (.InputMessage pt (gen-score2 0 60.0
-                                (const 1)
+                                1 
                                 (gauss 0.5 0.1)
                                 (heap [0.1 0.2 0.4])
                                 (rand-range 0.1 0.25)

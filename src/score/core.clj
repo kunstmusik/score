@@ -31,7 +31,7 @@
 
 ;; Score generators that take in the time of the event being generated 
 
-(defn const 
+(defn- const 
   "Generates constant value"
   [val]
   (fn [t]

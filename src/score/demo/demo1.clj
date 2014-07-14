@@ -21,7 +21,7 @@
 
 (def score2
   (gen-score2 0.0 10.0 
-              (const 4) (const 0.5) (const 3) 
+              4 0.5 3 
               (rand-range 0.1 20)
               (cycle [1 2 3]) 
               (swing [8 9 10])
