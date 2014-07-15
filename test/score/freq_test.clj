@@ -33,3 +33,14 @@
     (is (= [[8 0]]
            (pch-interval-seq [8 0] [])))
     ))
+
+(deftest invert-test
+  (testing "invert test"
+    (is (= [[8 0] [8 3] [7 7]]
+           (invert (pch-interval-seq [8 0] 3 4 ) 1 ))) 
+    (is (= [[8 0] [7 3] [7 7]]
+           (invert (pch-interval-seq [8 0] 3 4 ) 2 ))) 
+    (is (= [[8 0] [7 3] [6 7]]
+           (invert (pch-interval-seq [8 0] 3 16 ) 2 ))) 
+    ))
+

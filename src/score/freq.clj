@@ -69,3 +69,22 @@
     (keyword? a) (keyword->notenum a) 
     )
   )
+
+;; Functions for intervals
+;; interval path vs. interval set...
+(defn invert 
+  "Inverts a list of pchs given the version number"
+  [[base-pch & more :as pchs] inversion]
+  {:pre [(not (neg? inversion)) (< inversion (count pchs))]}
+  (if (= 0 inversion)
+    pchs
+    (let [inv-point (- (count pchs) inversion)]
+      (map #(if (< % inv-point)
+              %2 
+              (let [oct1 (first base-pch) 
+                    oct2 (first %2)]
+                  (pch-add %2 (* -12 (+ 1 (* 2 (- oct2 oct1))))) 
+                )
+              )
+           (range (count pchs))
+           pchs) )))
