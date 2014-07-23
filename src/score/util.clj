@@ -2,7 +2,10 @@
   (:import [javax.swing JOptionPane JTabbedPane
             JDialog JScrollPane JTextArea SwingUtilities
             AbstractAction JPopupMenu]
-           [java.awt.event MouseAdapter]))
+           [java.awt.event MouseAdapter]
+           [java.io StringWriter])
+  (:require [clojure.pprint :refer [pprint]]
+            [clojure.string :refer [trimr]]))
 
 (defn seq->gen 
   "Converts a sequence into a generator function with time arg"
@@ -35,7 +38,7 @@
 
 (defn show-info-tabs 
   "Show message in a global information dialog with tabs"
-  [msg title]
+  [^String msg ^String title]
   (when (nil? @tabs-dialog)
     (let [dlg (JDialog.)
           t (JTabbedPane.)
@@ -61,3 +64,10 @@
     (.add t title (JScrollPane. (JTextArea. msg)))
     (.setSelectedIndex t (- (.getTabCount t) 1))
     (.setVisible dlg true)))
+
+(defn pprint-str
+  "Use clojure's pprint but capture and return value as String"
+  [x]
+  (let [w (StringWriter.)]
+    (pprint x w)
+    (trimr (.toString w))))
