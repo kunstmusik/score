@@ -60,6 +60,18 @@
 (defn pch-interval-sco  [pch & intervals]
   (map pch->sco  (apply pch-interval-seq pch intervals)))
 
+(defn pch->notenum  [[oct scaleDegree]]
+    (+  (* oct 12) scaleDegree))
+
+(defn analyze-intervals
+  "Creates an interval list from a pch chord"
+  [chord]
+  (let [[x & xs] (map pch->notenum chord)]
+    (first 
+      (reduce (fn [[intervals last-pch] cur-pch]
+                [(conj intervals  (- cur-pch last-pch)) cur-pch])
+              [[] x] xs))))
+
 
 ;; Conversion to Hz
 
