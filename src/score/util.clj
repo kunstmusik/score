@@ -53,6 +53,10 @@
                       (.remove t index) 
                       (when (zero? (.getTabCount t))
                         (.setVisible dlg false)))))))
+      (.add p (proxy [AbstractAction] ["Close All Tabs"]
+                (actionPerformed [e]
+                  (.removeAll t)
+                  (.setVisible dlg false))))
       (.addMouseListener t
         (proxy [MouseAdapter] []
            (mousePressed [e]
