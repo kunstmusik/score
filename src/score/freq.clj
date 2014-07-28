@@ -37,14 +37,30 @@
     (+ note (* 12 (- octave 4)) 60 (convert-modifier modifier)) 
     ))
 
+(defn pch->notenum  
+  ([pch]
+   (pch->notenum pch 12))
+  ([[oct scale-degree] scale-degrees]
+    (+  (* oct scale-degrees) scale-degree)))
+
 ;; functions related to PCH format: [oct pch]
 
-(defn pch-add  [bpch interval]
-  (let  [scale-degrees 12
-         new-val  (+  (* scale-degrees  (first bpch))
-                     (second bpch) interval)]
+(defn pch-add  
+  "Add interval to pch (i.e. [8 0] 11 => [8 11]). Defaults to 12-tone octave."
+  ([pch interval]
+   (pch-add pch interval 12))
+  ([pch interval scale-degrees]
+  (let  [new-val  (+ (pch->notenum pch scale-degrees) interval)]
     [(quot new-val scale-degrees)
-     (rem new-val scale-degrees)]))
+     (rem new-val scale-degrees)])))
+
+(defn pch-diff 
+  "Return the interval between two pitches (i.e. [8 0] [9 1] => 13). Defaults
+  to 12-tone octave."
+  ([pch1 pch2]
+   (pch-diff pch1 pch2 12))
+  ([pch1 pch2 scale-degrees]
+  (- (pch->notenum pch2 scale-degrees) (pch->notenum pch1 scale-degrees))))
 
 (defn pch->sco  [[a b]]
   (format "%d.%02d" a b ))
@@ -59,9 +75,6 @@
 
 (defn pch-interval-sco  [pch & intervals]
   (map pch->sco  (apply pch-interval-seq pch intervals)))
-
-(defn pch->notenum  [[oct scaleDegree]]
-    (+  (* oct 12) scaleDegree))
 
 (defn analyze-intervals
   "Creates an interval list from a pch chord"

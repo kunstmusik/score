@@ -44,3 +44,21 @@
            (invert (pch-interval-seq [8 0] 3 16 ) 2 ))) 
     ))
 
+(deftest pch-add-test
+  (testing "pch-add with 12-TET"
+    (is (= [8 5] (pch-add [8 0] 5))) 
+    (is (= [9 11] (pch-add [8 0] 23))) 
+    (is (= [6 10] (pch-add [8 0] -14))) )
+  (testing "pch-add with non-standard octave"
+    (is (= [9 0] (pch-add [8 0] 13 13)))
+    (is (= [7 12] (pch-add [8 0] -3 15)))))
+
+(deftest pch-diff-test
+  (testing "pch-diff with 12-TET"
+    (is (= 12 (pch-diff [8 0] [9 0]))) 
+    (is (= 15 (pch-diff [8 0] [9 3]))) 
+    (is (= -13 (pch-diff [8 0] [6 11]))))
+  (testing "pch-diff with non-standard octave"
+    (is (= 17 (pch-diff [8 0] [9 4] 13))) 
+    (is (= 8 (pch-diff [8 0] [9 3] 5))) 
+    (is (= -10 (pch-diff [8 0] [7 43] 53)))))
