@@ -2,7 +2,7 @@
   (:import [javax.swing JOptionPane JTabbedPane
             JDialog JScrollPane JTextArea SwingUtilities
             AbstractAction JPopupMenu]
-           [java.awt.event MouseAdapter]
+           [java.awt.event MouseAdapter MouseEvent]
            [java.io StringWriter])
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :refer [trimr]]))
@@ -59,12 +59,12 @@
                   (.setVisible dlg false))))
       (.addMouseListener t
         (proxy [MouseAdapter] []
-           (mousePressed [e]
+           (mousePressed [^MouseEvent e]
              (when (SwingUtilities/isRightMouseButton e)
                (.show p t (.getX e) (.getY e))))))  
       (reset! tabs-dialog {:dialog dlg :tabs t})))
-  (let [dlg (:dialog @tabs-dialog)
-        t (:tabs @tabs-dialog)]
+  (let [dlg ^JDialog (:dialog @tabs-dialog)
+        t ^JTabbedPane (:tabs @tabs-dialog)]
     (.add t title (JScrollPane. (JTextArea. msg)))
     (.setSelectedIndex t (- (.getTabCount t) 1))
     (.setVisible dlg true)))
