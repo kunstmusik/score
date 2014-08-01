@@ -13,7 +13,7 @@
 (def note-vals {\C 0 \D 2 \E 4 \F 5 \G 7 \A 9 \B 11} )
 
 (defn- convert-modifier
-  ([mod-str]
+  ([^String mod-str]
    (let [mod-len (.length mod-str)] 
      (loop [v 0 indx 0]
        (if (>= indx mod-len)

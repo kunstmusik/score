@@ -21,7 +21,7 @@
     (+ y1 (* m x))))
 
 (defn interp-exponential 
-  [t exp [x1 y1 :as pt1] [x2 y2 :as pt2]]
+  [t ^double exp [x1 y1 :as pt1] [x2 y2 :as pt2]]
 
   (let [m (/ (- t x1) (double (- x2 x1)))]
    (cond

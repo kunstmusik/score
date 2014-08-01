@@ -11,7 +11,7 @@
 (defn gen-test-score 
   [instr fn1 fn2]
   (gen-score2 0.0 2.0 
-              (const instr) (const 0.1) 
+              instr 0.1 
               fn1 fn2))
 
 (println "[OSCILLATOR TEST]\n")
