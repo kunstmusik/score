@@ -1,5 +1,5 @@
-(defproject kunstmusik/score "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject kunstmusik/score "0.2.0-SNAPSHOT"
+  :description "A generic library for musical score generation"
   :url "http://github.com/kunstmusik/score"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
