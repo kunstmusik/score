@@ -7,6 +7,11 @@
   (:require [clojure.pprint :refer [pprint]]
             [clojure.string :refer [trimr]]))
 
+(defn swapv! 
+  "Swap a value in a vector using the given function."
+  [v index func]
+  (assoc v index (func (nth v index))))
+
 (defn seq->gen 
   "Converts a sequence into a generator function with time arg"
   [vs]
