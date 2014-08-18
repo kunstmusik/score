@@ -11,12 +11,10 @@
 (defn gen-notes 
   "Generate notes by assembling sequences together into notes. 
   If a constant value is given, it will be wrapped with (repeat).
-  If a no-arg function is given, it will be wrpaped with (repeatedly)."
+  If a no-arg function is given, it will be wrapped with (repeatedly)."
   [& fields]
   (let [pfields  (map score-arg fields)]
-    (apply map (fn [& args] args) pfields)))
-
-
+    (apply map (fn [& a] (into [] a)) pfields)))
 
 (defn format-sco 
   "Formats a list of notes into a Csound SCO string"
@@ -26,7 +24,6 @@
 
 (defn gen-score [& fields]
   (format-sco (apply gen-notes fields)))
-
 
 
 ;; Score generators that take in the time of the event being generated 
