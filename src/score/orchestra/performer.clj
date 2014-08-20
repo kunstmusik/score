@@ -16,17 +16,6 @@
   (:require [score.tuning :refer [pch->freq]]
             [score.util :refer [swapv!]]))
 
-(defn swapv! 
-  "Swap a value in a vector using the given function."
-  [v index func]
-  (assoc v index (func (nth v index))))
-
-;(swapv! [1 2 3] 1 #(* 2 %))
-;(-> [1 2 3]
-;    (swapv! 1 #(* 2 %))
-;    (swapv! 2 #(+ 2 %))
-;    )
-
 (defn create-performer
   ([instr amp-adj space & {:keys [name tuning] 
                        :or {name "Performer" tuning nil}}] 
@@ -41,7 +30,8 @@
   [performer note]
   (let [v (-> (into [(:instr performer)] note)
               (swapv! 2 #(- % (* (Math/random) 0.01)))
-              (swapv! 5 #(* (:amp-adj performer) %)))
+              (swapv! 5 #(* (:amp-adj performer) %))
+              (swapv! 6 (fn [a] (:space performer))))
         tuning (:tuning performer)]
     (if tuning
       (let [tune (partial pch->freq tuning)] 
