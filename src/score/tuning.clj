@@ -43,7 +43,7 @@
   See http://www.huygens-fokker.org/scala/scl_format.html for more information."
   [scala-scale-file-name]
   (with-open [rdr (reader scala-scale-file-name)]
-    (loop [tuning {} 
+    (loop [tuning {:base-freq MIDDLE-C} 
            state 0
            [x & xs] (line-seq rdr)
            ratios [1.0]
