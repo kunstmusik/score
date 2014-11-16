@@ -4,10 +4,10 @@
 
 (deftest midi->freq-test
   (testing "midi->freq"
-    (is (= 440.0 (midi->freq 57)))  
-    (is (= 880.0 (midi->freq 69)))  
-    (is (= 440.0 (midi->freq (keyword->notenum :A3))))
-    (is (= 880.0 (midi->freq (keyword->notenum :A4))))
+    (is (= 220.0 (midi->freq 57)))  
+    (is (= 440.0 (midi->freq 69)))  
+    (is (= 220.0 (midi->freq (keyword->notenum :A3))))
+    (is (= 440.0 (midi->freq (keyword->notenum :A4))))
     ))
 
 (deftest keyword->notenum-test

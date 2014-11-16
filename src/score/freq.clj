@@ -5,7 +5,7 @@
 (defn midi->freq
   "Convert MIDI Note number to frequency in hertz"
   [notenum]
-  (* 440 (Math/pow 2.0 (/ (- notenum 57) 12))))
+  (* 440 (Math/pow 2.0 (/ (- notenum 69) 12))))
 
 
 ;; Functions for keyword conversions to MIDI notenum
@@ -37,11 +37,17 @@
     (+ note (* 12 (- octave 4)) 60 (convert-modifier modifier)) 
     ))
 
+(defn keyword->freq
+  "Convert keyword to frequency (i.e. :A4 is 440.0)"
+  [sym]
+  (midi->freq (keyword->notenum sym)))
+
 (defn pch->notenum  
   ([pch]
    (pch->notenum pch 12))
   ([[oct scale-degree] scale-degrees]
-    (+  (* oct scale-degrees) scale-degree)))
+    (+ (* oct scale-degrees) scale-degree)))
+
 
 ;; functions related to PCH format: [oct pch]
 
@@ -50,7 +56,7 @@
   ([pch interval]
    (pch-add pch interval 12))
   ([pch interval scale-degrees]
-  (let  [new-val  (+ (pch->notenum pch scale-degrees) interval)]
+  (let [new-val (+ (pch->notenum pch scale-degrees) interval)]
     [(quot new-val scale-degrees)
      (rem new-val scale-degrees)])))
 
@@ -86,7 +92,7 @@
               [[] x] xs))))
 
 
-;; Conversion to Hz
+;; Conversion to Hz, not yet implemented...
 
 (defn hertz 
   [a]
