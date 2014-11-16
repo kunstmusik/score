@@ -1,7 +1,7 @@
 (ns score.core
   (:require 
     [clojure.string :refer  [join]]
-    [score.util :refer [seq->gen]]))
+    [score.util :refer [seq->gen swapv!]]))
 
 (defn- score-arg  [a]
   (cond (sequential? a) a 
@@ -22,7 +22,9 @@
   (join "\n"
         (map #(str "i" (join " " %)) notes)))
 
-(defn gen-score [& fields]
+(defn gen-score 
+  "Generates Csound score using gen-notes, then apply format-sco"
+  [& fields]
   (format-sco (apply gen-notes fields)))
 
 
@@ -67,3 +69,24 @@
 (defn gen-score2
   [start dur & fields] 
   (format-sco (apply gen-notes2 start dur fields)))
+
+
+(defmacro process-notes 
+  "Process given notelist using pairs of index and functions. For example,
+  using:
+  
+  (process-notes notes 
+    3 db->amp
+    4 keyword->freq)
+ 
+  will process each note in notes, converting the 4th field with db->amp and
+  5th field with keyword->freq.  Uses swapv! from pink.util."
+  [notelist & body]
+  (let [body (map (fn [[a b]] `(pink.util/swapv! ~a ~b))
+                    (partition 2 body))
+        n (gensym)]
+    `(map (fn [~n] 
+            (-> ~n 
+                ~@body))
+          ~notelist)))
+
