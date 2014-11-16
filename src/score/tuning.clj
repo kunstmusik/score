@@ -3,7 +3,7 @@
   (:require [clojure.java.io :refer :all]
             [clojure.string :refer [trim triml split]]))
 
-(def MIDDLE-C 261.625565)
+(def MIDDLE-C 261.6255653005986)
 (def TWELVE-TET
   { :description "Twelve-Tone Equal Temperament"
     :base-freq MIDDLE-C 
