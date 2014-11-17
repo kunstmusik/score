@@ -82,7 +82,7 @@
   will process each note in notes, converting the 4th field with db->amp and
   5th field with keyword->freq.  Uses swapv! from pink.util."
   [notelist & body]
-  (let [body (map (fn [[a b]] `(pink.util/swapv! ~a ~b))
+  (let [body (map (fn [[a b]] `(score.util/swapv! ~a ~b))
                     (partition 2 body))
         n (gensym)]
     `(map (fn [~n] 
