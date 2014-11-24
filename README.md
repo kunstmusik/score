@@ -45,8 +45,8 @@ function to send the notes as MIDI, OSC, etc. (I have some plans to do some
 interesting event exploration using score with a Clojure music system I'm
 working on.)
 
-For examples, I have some demo clj files I used while developing within a REPL
-(https://github.com/kunstmusik/score/tree/master/src/score/demo).They show a
+For examples, I have some demo clj files I used while developing within a REPL.
+[They](https://github.com/kunstmusik/score/tree/master/src/score/demo) show a
 bit of what using the library would look like.
 
 ## Csound Live Coding Example 
