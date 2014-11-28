@@ -1,8 +1,7 @@
 (ns score.demo.csound-demo
   (:require [score.core :refer :all]
-            [score.probability :refer :all]
-            [score.items :refer :all]
-            )
+            [score.mask.probability :refer :all]
+            [score.mask.items :refer :all])
   (:import [csnd6 csnd6 Csound CsoundPerformanceThread] 
            [java.util Random]))
 
@@ -30,8 +29,8 @@ endin")
   ;; Eval below to Start
   (csnd6/csoundInitialize (bit-or csnd6/CSOUNDINIT_NO_ATEXIT csnd6/CSOUNDINIT_NO_SIGNAL_HANDLER))
 
-  (def cs (Csound.))
-  (def pt (CsoundPerformanceThread. cs))
+  (def ^Csound cs (Csound.))
+  (def ^CsoundPerformanceThread pt (CsoundPerformanceThread. cs))
   (.SetOption cs "-odac") 
   (.CompileOrc cs orc) 
   (.Start cs)            

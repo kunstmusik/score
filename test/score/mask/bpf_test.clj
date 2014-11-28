@@ -1,6 +1,6 @@
-(ns score.bpf-test
+(ns score.mask.bpf-test
   (:require [clojure.test :refer :all]
-            [score.bpf :refer :all]))
+            [score.mask.bpf :refer :all]))
 
 (def test-pts 
   (partition 2 [0 0 1 0.5 2 0.75 3 0.25 4 1]))

@@ -1,7 +1,7 @@
-(ns ^{
-      :author "Steven Yi"
-      :doc "Break-point functions. Based on Andre Bartetzki's CMask." } 
-  score.bpf)
+(ns 
+  ^{ :author "Steven Yi"
+     :doc "Break-point functions. Based on Andre Bartetzki's CMask." } 
+  score.mask.bpf)
 
 (defn find-points 
   [t pts]

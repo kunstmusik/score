@@ -1,7 +1,7 @@
 (ns score.demo.demo3
   (:require 
     [score.core :refer :all]
-    [score.bpf :refer :all]
+    [score.mask.bpf :refer :all]
     [score.util :refer [debug-print]]
     ))
 

@@ -1,7 +1,7 @@
-(ns ^{
-      :author "Steven Yi"
-      :doc "Accumulator. Based on Andre Bartetzki's CMask." } 
-  score.accumulator
+(ns 
+  ^{ :author "Steven Yi"
+     :doc "Accumulator. Based on Andre Bartetzki's CMask." } 
+  score.mask.accumulator
   (:require [score.core :refer [wrap-generator]]))
 
 ;; Documentation for accumulate taken from Andre Bartetzki's CMask Manual
@@ -12,9 +12,10 @@
   ([genfn]
    (accumulate genfn 0))
   ([genfn init]
-   (let [accum (atom init)] 
+   (let [_genfn (wrap-generator genfn)
+         accum (atom init)] 
      (fn [t]
-       (swap! accum + (genfn t))))))
+       (swap! accum + (_genfn t))))))
 
 (defn limit [v l h]
   (cond
@@ -25,7 +26,8 @@
 
 (defn create-accum-function
   [genfn low high init accumfn]
-  (let [accum (atom init)
+  (let [_genfn (wrap-generator genfn) 
+        accum (atom init)
         lowfn (wrap-generator low)
         highfn (wrap-generator high)]
     (fn [t]
@@ -33,7 +35,7 @@
             l (lowfn t)]
         (swap! accum
                (fn [a b] (accumfn (+ a b) l h)) 
-               (genfn t))))))
+               (_genfn t))))))
 
 (defn accumulate-limit 
   "The accumulator continuously sums all its input values to an inital value 
@@ -79,6 +81,6 @@
   "The accumulator continuously sums all its input values to an inital value 
   init. The inital value is optional and has a default value of 0."
   ([low high genfn]
-   (accumulate-wrap low high genfn 0))
+   (accumulate-wrap low high (wrap-generator genfn) 0))
   ([low high genfn init]
-   (create-accum-function genfn low high init wrap)))
+   (create-accum-function (wrap-generator genfn) low high init wrap)))

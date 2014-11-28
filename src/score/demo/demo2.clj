@@ -1,7 +1,7 @@
 (ns score.demo.demo2
   (:require 
     [score.core :refer :all]
-    [score.oscillators :refer :all]
+    [score.mask.oscillators :refer :all]
     [score.util :refer [debug-print]]
     ))
 

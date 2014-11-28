@@ -1,7 +1,7 @@
 (ns ^{
       :author "Steven Yi"
       :doc "Mask function. Based on Andre Bartetzki's CMask." } 
-  score.mask
+  score.mask.mask
   (:require [score.core :refer [wrap-generator]]))
 
 (defn mask-value 

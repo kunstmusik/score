@@ -1,11 +1,11 @@
-(ns score.accumulator-test
+(ns score.mask.accumulator-test
   (:require [clojure.test :refer :all]
             [score.core :refer :all]
-            [score.accumulator :refer :all]))
+            [score.mask.accumulator :refer :all]))
 
 (deftest accumulate-test
   (testing "accumulate test"
-    (let [gen (accumulate (const 2))]
+    (let [gen (accumulate 2)]
       
       (is (= 2 (gen 0.0)))
       (is (= 4 (gen 0)))
@@ -14,7 +14,7 @@
 
       )
 
-    (let [gen (accumulate (const 2) 3)]
+    (let [gen (accumulate 2 3)]
       
       (is (= 5 (gen 0.0)))
       (is (= 7 (gen 0)))
@@ -33,7 +33,7 @@
 
 (deftest accumulate-limit-test
   (testing "accumulate-limit"
-    (let [gen (accumulate-limit 3 6 (const 2))]
+    (let [gen (accumulate-limit 3 6 2)]
       
       (is (= 3 (gen 0.0)))
       (is (= 5 (gen 0)))
@@ -56,7 +56,7 @@
 
 (deftest accumulate-mirror-test
   (testing "accumulate-mirror"
-    (let [gen (accumulate-mirror 3 6 (const 2))]
+    (let [gen (accumulate-mirror 3 6 2)]
       (is (= 4 (gen 0.0)))
       (is (= 6 (gen 0)))
       (is (= 4 (gen 0)))
@@ -78,7 +78,7 @@
 
 (deftest accumulate-wrap-test
   (testing "accumulate-wrap"
-    (let [gen (accumulate-wrap 3 6.5 (const 2))]
+    (let [gen (accumulate-wrap 3 6.5 2)]
       (is (= 5.5 (gen 0.0)))
       (is (= 4.0 (gen 0)))
       (is (= 6.0 (gen 0)))

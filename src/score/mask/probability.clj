@@ -1,9 +1,8 @@
-(ns ^{
-      :author "Steven Yi"
-      :doc "Probability functions. Based on Andre Bartetzki's CMask." } 
-  score.probability
-  (:require [score.core :refer [wrap-generator]])
-  )
+(ns 
+  ^{ :author "Steven Yi"
+     :doc "Probability functions. Based on Andre Bartetzki's CMask." } 
+  score.mask.probability
+  (:require [score.core :refer [wrap-generator]]))
 
 (defn uniform
   "uniform random generator with range 0.0 to 1.0"

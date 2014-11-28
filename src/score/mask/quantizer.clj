@@ -1,7 +1,7 @@
-(ns ^{
-      :author "Steven Yi"
-      :doc "Quantize. Based on Andre Bartetzki's CMask." } 
-  score.quantizer
+(ns 
+  ^{ :author "Steven Yi"
+     :doc "Quantize. Based on Andre Bartetzki's CMask." } 
+  score.mask.quantizer
   (:require [score.core :refer [wrap-generator]])
   )
 

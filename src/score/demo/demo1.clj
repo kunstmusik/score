@@ -2,8 +2,8 @@
   (:require 
     [score.core :refer :all]
     [score.freq :refer :all]
-    [score.probability :refer :all]
-    [score.items :refer :all]
+    [score.mask.probability :refer :all]
+    [score.mask.items :refer :all]
     ))
 
 
@@ -33,8 +33,7 @@
 (println  score2)
 
 (def score3
-  (gen-score2 0.0 10.0
-              (const 3) (const 0.25)
+  (gen-score2 0.0 10.0 3 0.25 
               (uniform) 
               (linear 1) 
               (linear -1)
@@ -49,9 +48,7 @@
 
 
 (println "[TEST 4]")
-(println (gen-score2 0.0 10.0
-                     (const 4)
-                     (const 0.5)
+(println (gen-score2 0.0 10.0 4 0.5 
                      (gauss 0.5 0.2)
                      (cauchy 0.1 0.5)
                      (beta 0.1 0.1)

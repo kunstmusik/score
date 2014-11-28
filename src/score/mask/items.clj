@@ -1,4 +1,7 @@
-(ns score.items
+(ns
+  ^{ :author "Steven Yi"
+     :doc "Item list functions. Based on Andre Bartetzki's CMask." } 
+  score.mask.items
   (:require [score.util :refer [seq->gen]])
   )
 

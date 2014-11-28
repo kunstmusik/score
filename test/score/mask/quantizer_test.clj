@@ -1,8 +1,8 @@
-(ns score.quantizer-test
+(ns score.mask.quantizer-test
   (:require [clojure.test :refer :all]
-            [score.oscillators :refer :all]
-            [score.mask :refer :all]
-            [score.quantize :refer :all]))
+            [score.mask.oscillators :refer :all]
+            [score.mask.mask :refer :all]
+            [score.mask.quantizer :refer :all]))
 
 (deftest quantize-test
   (testing "quantize test"

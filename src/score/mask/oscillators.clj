@@ -1,6 +1,7 @@
-(ns ^{:author "Steven Yi"
-      :doc "Oscillator Generators, based on Andre Bartetzki's CMask" } 
-  score.oscillators
+(ns 
+  ^{:author "Steven Yi"
+    :doc "Oscillator Generators, based on Andre Bartetzki's CMask" } 
+  score.mask.oscillators
   (:require [score.core :refer [wrap-generator]])
   )
 
