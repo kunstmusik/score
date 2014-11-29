@@ -90,3 +90,15 @@
                 ~@body))
           ~notelist)))
 
+(defn with-tempo 
+  "Adjust note start and durations according to tempo. 1.0 equals one beat at 
+  tempo."
+  ([tempo notes]
+   (let [_notes (if (vector? (first notes)) notes [notes])
+          adjust (/ 60.0 tempo)
+          adjuster (partial * adjust)]
+     (process-notes _notes
+                    0 adjuster 
+                    1 adjuster)))
+  ([tempo note & notes]
+   (with-tempo tempo (list* note notes))))
