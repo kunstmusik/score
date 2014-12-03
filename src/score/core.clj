@@ -102,3 +102,17 @@
                     1 adjuster)))
   ([tempo note & notes]
    (with-tempo tempo (list* note notes))))
+
+
+(defn with-start 
+  "Translates note vectors in time by start value. Start may either be a double
+  value, where inde of start time in notes is assumed to be 1, or start may
+  also be given as a 2-vector in the form [index startime]."
+  [start sco]
+  (if (and (sequential? start) (= 2 (count start)))
+    (let [[indx ^double start-time] start]
+      (process-notes sco indx #(+ % start-time)))
+    (process-notes 
+      sco 
+      1 #(+ % ^double start)))) 
+
