@@ -116,3 +116,46 @@
       sco 
       1 #(+ % ^double start)))) 
 
+
+;; measured scores
+(defn convert-measure-length 
+  "Gets beat length of measure given beat value and meter. I.e. for
+  beat = 4, and meter of 4 4, returns 4 beats as the measure length."
+  [beat meter-num meter-beats]
+  (* meter-num (/ beat meter-beats)))
+
+(defn convert-measured-score
+  "Converts a measured score into a single score list. The measured-score
+  is a single list that has the following shape:
+
+  [:beat 4 :measure 4 4 
+    0 [list0 list1] 
+    1 [list0] 
+    2 [list0 list1]]
+
+  This means, with a meter of 4/4 where a single beat is 4 in the meter
+  definition, read each pair of values as a measure number and list of
+  note lists. For example, list0 is played at measure 0, 1, and 2, while
+  list1 is played only in measures 0 and 2.  If list1 had only one note
+  of [instr-func 0.0 1.0], then the generated score would have:
+ 
+  [[instr-func 0.0 1.0] [instr-func 8.0 1.0]] 
+
+  This notation allows for organizing hierarchies of materials as lists
+  of notes. Note, notes within note lists must be in the format of:
+  
+  [instr-func start-time duration optional-args...]"
+  [score]
+  (let [[b beat m meter-num meter-beats & measures] score]
+    ;; verify args
+    (cond 
+      (or (not= :beat b) (not= :meter m)
+              (not-every? number? [beat meter-num meter-beats]))
+      (throw (Exception. "Invalid Score Header: Must be of form [:beat x :meter x x] where x are numbers"))
+      (odd? (count measures))
+      (throw (Exception. "Invalid Score Measures: Count must be even number of x-[] pairs")))
+    (let [measure-beats (convert-measure-length beat meter-num meter-beats)]
+      (mapcat (fn [[m s]]
+                (let [start (* m measure-beats)]
+                  (mapcat #(with-start start %) s)))
+              (partition 2 measures)))))
