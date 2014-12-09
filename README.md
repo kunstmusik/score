@@ -1,4 +1,6 @@
-# score 
+# Score 
+
+[![Clojars Project](http://clojars.org/kunstmusik/score/latest-version.svg)](http://clojars.org/kunstmusik/score)
 
 A Clojure library for music score generation.  A note is a list of values and
 a list of notes is a list of lists.
