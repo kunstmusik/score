@@ -116,6 +116,16 @@
       sco 
       1 #(+ % ^double start)))) 
 
+(defn starting-at 
+  "Given a starting time and given score, returns a note list where all notes with
+  starting times earlier than the given start are dropped, and all remaining notes
+  have their times translated relative to the start time.  Useful when developing 
+  works to take a score start at a time somewhere in the middle, then send that off
+  to a running engine."
+  [start sco]
+  (->> (filter #(>= (nth % 1) start) sco)
+       (with-start (- start))))
+
 ;; measured scores
 
 (defn get-measure-beat-length 
