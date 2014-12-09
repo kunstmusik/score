@@ -162,7 +162,7 @@
       (throw (Exception. "Invalid Score Header: Must be of form [:meter x x] where x are numbers"))
       (odd? (count measures))
       (throw (Exception. "Invalid Score Measures: Count must be even number of x-[] pairs")))
-    (let [measure-beats (get-measure-beat-length beat meter-num meter-beats)]
+    (let [measure-beats (get-measure-beat-length meter-num meter-beats)]
       (mapcat (fn [[m s]]
                 (let [start (* m measure-beats)]
                   (mapcat #(with-start start %) s)))
