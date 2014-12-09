@@ -4,7 +4,7 @@ Score is a library of functions for creating musical scores as list data. It is 
 
 ## Values
 * [Pitch and Scales](pitch.md)
-* [Amplitude](pitch.md)
+* [Amplitude](amplitude.md)
 
 ## Explicit Scoring
 * [Measured Scores](measured_score.md)
