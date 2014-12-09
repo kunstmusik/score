@@ -139,12 +139,19 @@
   is a single list that has the following shape:
 
   [:meter 4 4 
-    0 [list0 list1] 
-    1 [list0] 
-    2 [list0 list1]]
+    0 list0 list1 
+    1 list0 
+    2 list0 list1]
 
-  This means, with a meter of 4/4, read each pair of values as a measure number
-  and list of note lists. For example, list0 is played at measure 0, 1, and 2,
+  Given a meter of 4/4, process each value according the following rules:
+
+  * If a number is found, set that as current measure number. 
+  * If a list is found, check if it is a single note or a list of notes. 
+    If it is a list of notes, adjust start time using with-start and beat
+    value calculated to measure number.  If it is a single note, adjust
+    start time of the single note relative to the measure number. 
+
+  For example, list0 is played at measure 0, 1, and 2,
   while list1 is played only in measures 0 and 2.  If list1 had only one note
   of [instr-func 0.0 1.0], then the generated score would have:
  
@@ -155,15 +162,21 @@
   
   [instr-func start-time duration optional-args...]"
   [score]
-  (let [[m meter-num meter-beats & measures] score]
+  (let [[m meter-num meter-beats & score-data] score]
     ;; verify args
     (cond 
       (not= :meter m)
-      (throw (Exception. "Invalid Score Header: Must be of form [:meter x x] where x are numbers"))
-      (odd? (count measures))
-      (throw (Exception. "Invalid Score Measures: Count must be even number of x-[] pairs")))
-    (let [measure-beats (get-measure-beat-length meter-num meter-beats)]
-      (mapcat (fn [[m s]]
-                (let [start (* m measure-beats)]
-                  (mapcat #(with-start start %) s)))
-              (partition 2 measures)))))
+      (throw (Exception. "Invalid Score Header: Must be of form [:meter x x] where x are numbers")))
+    (let [measure-beats (get-measure-beat-length meter-num meter-beats)] 
+      (loop [[x & xs] score-data 
+             cur-start 0.0
+             output []]
+        (if x
+          (cond 
+            (number? x) ;; new measure
+            (recur xs (* (double x) measure-beats) output)
+            (sequential? (first x)) ;; block of notes
+            (recur xs cur-start (concat output (with-start cur-start x)))
+            :else ;; single note
+            (recur xs cur-start (concat output (with-start cur-start [x])))) 
+          output )))))
