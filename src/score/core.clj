@@ -160,7 +160,7 @@
   This notation allows for organizing hierarchies of materials as lists
   of notes. Note, notes within note lists must be in the format of:
   
-  [instr-func start-time duration optional-args...]"
+  [instr-func start-time optional-args...]"
   [score]
   (let [[m meter-num meter-beats & score-data] score]
     ;; verify args
@@ -180,3 +180,45 @@
             :else ;; single note
             (recur xs cur-start (concat output (with-start cur-start [x])))) 
           output )))))
+
+
+
+(defn convert-timed-score
+  "Converts a timed score into a single score list. The measured-score
+  is a single list that has the following shape:
+
+  [ 0 list0 list1 
+    10 list0 
+    20 list0 list1]
+
+  Processes each value according the following rules:
+
+  * If a number is found, set that as current start time in beats. 
+  * If a list is found, check if it is a single note or a list of notes. 
+    If it is a list of notes, adjust start time using with-start and 
+    current start-time.  If it is a single note, adjust
+    start time of the single note relative to the start-time given. 
+
+  For example, list0 is played at times 0, 10, and 20,
+  while list1 is played at times 0 and 20.  If list1 had only one note
+  of [instr-func 0.0 1.0], then the generated score would have:
+ 
+  [[instr-func 0.0 1.0] [instr-func 20.0 1.0]] 
+
+  This notation allows for organizing hierarchies of materials as lists
+  of notes. Note, notes within note lists must be in the format of:
+  
+  [instr-func start-time optional-args...]"
+  [score]
+  (loop [[x & xs] score
+         cur-start 0.0
+         output []]
+    (if x
+      (cond 
+        (number? x) ;; new measure
+        (recur xs (double x) output)
+        (sequential? (first x)) ;; block of notes
+        (recur xs cur-start (concat output (with-start cur-start x)))
+        :else ;; single note
+        (recur xs cur-start (concat output (with-start cur-start [x])))) 
+      output )))
