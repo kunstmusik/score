@@ -6,4 +6,6 @@
   :dependencies [[org.clojure/clojure "1.6.0"]]
 
   :profiles  { :dev  {
-                      :global-vars  {*warn-on-reflection* true} } })
+                      :global-vars  {*warn-on-reflection* true} } }
+  :scm {:name "git"
+        :url "https://github.com/kunstmusik/score.git" })
