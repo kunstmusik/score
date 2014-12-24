@@ -36,3 +36,10 @@
 
 ;(println (convert-timed-score score))
 
+
+;(def score
+;  [:meter 4 4
+;  0 bd-pattern 
+;  1 bd-pattern snare-pattern])
+
+;(println (convert-measured-score score))
