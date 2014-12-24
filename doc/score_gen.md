@@ -1,2 +1,2 @@
-# Score Gen
+# Score Generation
 

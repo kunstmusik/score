@@ -22,7 +22,7 @@ The score has three notes, with each note on its own line.  The notes all begin 
 
 For Score, which uses Clojure sequences to represent both the list of notes and the notes themselves, the above could be rewritten as:
 
-```
+```clojure
 [[i 1 0.0 2.0 0.5 440]
  [i 1 2.0 2.0 0.5 440]
  [i 2 2.0 2.0 0.5 880]]
@@ -30,14 +30,14 @@ For Score, which uses Clojure sequences to represent both the list of notes and 
 
 Once we start working with lists as models for notes/events, we can draw upon all of our standard Clojure sequence generation and manipulation skills to generate and process notes. For example, rather than define the instrument that is used as part of the note, we can opt to leave it out:
 
-```
+```clojure
 [[0.0 2.0 0.5 440]
  [2.0 2.0 0.5 440]
  [2.0 2.0 0.5 880]]
 ```
 
 That would then give us the flexibility to easily supply the instrument function, or use the same score block with multiple instruments:
-```
+```clojure
 (def score-block-0
   [[0.0 2.0 0.5 440]
    [2.0 2.0 0.5 440]
@@ -52,7 +52,7 @@ That would then give us the flexibility to easily supply the instrument function
 
 If we then printed out trumpet-score and synth-score, we would get:
 
-```
+```clojure
 [[trumpet 0.0 2.0 0.5 440]
  [trumpet 2.0 2.0 0.5 440]
  [trumpet 2.0 2.0 0.5 880]]
