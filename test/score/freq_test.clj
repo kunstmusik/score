@@ -19,29 +19,44 @@
     (is (= 70 (keyword->notenum :A#4)))
     ))
 
+(deftest hertz-test
+  (testing "hertz"
+    (is (= 440.0 (hertz :A4)))
+    (is (= 220.0 (hertz 57)))  
+    (is (= 440.0 (hertz 440.0)))  
+    (is (= 440.0 (hertz [8 9])))  
+    ))
+
 (deftest pch-interval-seq-test
   (testing "pch-interval-seq test"
-   
-    (is (= [[8 0] [8 2] [8 3] [8 1]]
-           (pch-interval-seq [8 0] 2 1 -2))) 
     (is (= [[8 0] [8 2] [8 3] [8 1]]
            (pch-interval-seq [8 0] [2 1 -2]))) 
-    (is (= [[8 0] [8 2]]
-           (pch-interval-seq [8 0] 2)))
+    (is (= [[8 0] [8 2] [8 3] [8 1]]
+           (pch-interval-seq [8 0] [2 1 -2]))) 
     (is (= [[8 0] [8 2]]
            (pch-interval-seq [8 0] [2])))
     (is (= [[8 0]]
            (pch-interval-seq [8 0] [])))
+    )
+  (testing "pch-interval-seq test with scale-degrees"
+    (is (= [[8 0] [8 2] [8 3] [8 1]]
+           (pch-interval-seq [8 0] [2 1 -2] 12))) 
+    (is (= [[8 0] [8 2] [9 0] [9 3]]
+           (pch-interval-seq [8 0] [2 8 3] 10))) 
+    (is (= [[8 0] [10 0]]
+           (pch-interval-seq [8 0] [2] 1)))
+    (is (= [[8 0]]
+           (pch-interval-seq [8 0] [] 12)))
     ))
 
 (deftest invert-test
   (testing "invert test"
     (is (= [[8 0] [8 3] [7 7]]
-           (invert (pch-interval-seq [8 0] 3 4 ) 1 ))) 
+           (invert (pch-interval-seq [8 0] [3 4] ) 1 ))) 
     (is (= [[8 0] [7 3] [7 7]]
-           (invert (pch-interval-seq [8 0] 3 4 ) 2 ))) 
+           (invert (pch-interval-seq [8 0] [3 4] ) 2 ))) 
     (is (= [[8 0] [7 3] [6 7]]
-           (invert (pch-interval-seq [8 0] 3 16 ) 2 ))) 
+           (invert (pch-interval-seq [8 0] [3 16] ) 2 ))) 
     ))
 
 (deftest pch-add-test
