@@ -11,8 +11,8 @@
 
 (def score
   (gen-score 1 0 1
-             (pch-interval-sco  [6 0] 12 8 6 2 6)
-             (pch-interval-sco  [6 0] 12 8 6 2 6)
+             (pch-interval-sco  [6 0] [12 8 6 2 6])
+             (pch-interval-sco  [6 0] [12 8 6 2 6])
              (range -10 -100 -1) 0 1))
 
 (println "[TEST 1]")
