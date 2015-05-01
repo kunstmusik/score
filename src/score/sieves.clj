@@ -19,31 +19,47 @@
   {:tag :intersection
    :items sieves})
 
-(defmulti sieve? :tag)
+(defmulti element? :tag)
 
-(defmethod sieve? :union [s n]
+(defmethod element? :union [s n]
   (let [sieves (:items s)]
-    (some #(sieve? % n) sieves)))
+    (some #(element? % n) sieves)))
 
-(defmethod sieve? :intersection [s n]
+(defmethod element? :intersection [s n]
    (let [sieves (:items s)]
-    (every? #(sieve? % n) sieves)))
+    (every? #(element? % n) sieves)))
 
-(defmethod sieve? :default [s n]
+(defmethod element? :default [s n]
   (if-not (vector? s)
     (throw (Exception. (str "Invalid sieve: " s))))
   (let [[m i] s]
     (= i (mod n m))))
 
+
+(defmulti normalize :tag)
+
+(defmethod normalize :union [s]
+  (apply U (map normalize (:items s))))
+
+(defmethod normalize :intersection [s]
+  (apply I (map normalize (:items s))))
+
+(defmethod normalize :default [s]
+  (let [[m i] s]
+    [m (mod i m)]))
+
+(defn- gcd
+  "Greated Common Divisor"
+  [a b]
+  )
+
+(defn- lcm 
+  "Least multiple"
+  [a b]
+  )
+
 (defn gen-sieve 
   [sieve]
-  (filter #(sieve? sieve %) (range)))
-
-
-;; (take 20 (gen-sieve (U  [3 2]  [4 3])))
-
-;(defn period
-;  [sieve]
-;  )
+  (filter #(element? sieve %) (range)))
 
 
