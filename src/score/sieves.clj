@@ -58,6 +58,25 @@
   [a b]
   )
 
+(defn- euclide
+  ;a1 >= a2 > 0
+  [a1 a2]
+  (loop [a1 a1 a2 a2]
+    (let [tmp (mod a1 a2)] 
+      (if (zero? tmp)
+      a2 
+      (recur a2 tmp)))))
+
+(defn- meziriac 
+  ;c1 >= c2 > 0
+  [c1 c2]
+  (if (= c2 1)
+    1
+    (loop [t 1]
+      (if (= (mod (* t c1) c2) 1)
+        t
+        (recur (unchecked-inc t))))))
+
 (defn gen-sieve 
   [sieve]
   (filter #(element? sieve %) (range)))
