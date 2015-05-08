@@ -21,6 +21,21 @@
                  (gen-sieve (U (I [2 1] [3 2])
                                   (I [2 1] [2 2])
                                   )))))
+    (is (= [0 3 6 8 11 14] 
+           (gen-sieve 6 (apply U (map #(vector 8 %) [0 3 6])))))
+    (is (= [8 32 56] (gen-sieve 3 (I [3 2] [8 0]))))
+    (is (= [0 1 4 7 8 10 12 13 16 19 20 22] 
+           (gen-sieve 12 (U [3 1] [4 0]))))
+    (is (= [2 3 4 5 8 9 10 11 14 17 19 20 23 24] 
+           (gen-sieve 14 (U [5 4] [3 2] [7 3]))))
+    (is (= [2 3 10 12 17 22 24 31]
+           (gen-sieve 8 (U (I [5 2] [2 0]) [7 3]))))
+    (is (= [3 11 23 33 35 47 59 63 71 83]
+           (gen-sieve 10 (U 
+                          (I [3 2] [4 7]) 
+                          (I [6 9] [15 18])))))
+    (is (= [3 23 33 47 63 70 71 93 95 119]
+           (gen-sieve 10 (U [24 23] [30 3] [104 70]))))
     ))
 
 (deftest normalize-test
@@ -35,12 +50,12 @@
            (normalize (I [4 5] (U [3 9] [4 7]))))) 
     ))
 
-(deftest gcd-test
-  (with-private-fns [score.sieves [gcd]] 
+(deftest euclid-test
+  (with-private-fns [score.sieves [euclid]] 
     (testing "GCD using Euclid's Algorithm"
-    (is (= 4 (gcd 16 4)))
-    (is (= 21 (gcd 252 105)))
-    (is (= 21 (gcd 105 252)))
+    (is (= 4 (euclid 16 4)))
+    (is (= 21 (euclid 252 105)))
+    (is (= 21 (euclid 105 252)))
     ))
   )
 

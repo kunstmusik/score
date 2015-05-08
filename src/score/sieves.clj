@@ -136,9 +136,12 @@
   (reduce-sieve (normalize sieve)))
 
 (defn gen-sieve 
-  "Generate infinite sequence using sieve."
-  [sieve]
+  "Generate sequence using sieve. Can optionally provide number n of elements
+  to produce."
+  ([n sieve]
+   (take n (gen-sieve sieve)))
+  ([sieve]
   (let [s (simplified sieve)]
     (when-not (nil? s)
-      (filter #(element? sieve %) (range)))))
+      (filter #(element? s %) (range))))))
 
