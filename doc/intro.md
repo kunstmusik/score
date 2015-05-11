@@ -24,6 +24,7 @@ The design of the library is based on score functions designed and used by the a
 ## Generation
 * [Score Generation](score_gen.md)
 * [Mask](mask.md)
+* [Sieves](sieves.md)
 
 ## Examples 
 * [Working with Csound](csound.md)

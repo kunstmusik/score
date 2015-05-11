@@ -1,8 +1,13 @@
 (ns score.sieves
-  "Sieve functions based on work by Iannis Xenakis. Sieves are represented as
+  "\"...sieve theory is the study of the internal symmetries of a series of points 
+  either constructed intuitively, given by observation, or invented completely 
+  from moduli of repetition.\" - Xenakis, Formalized Music, pp. 276 
+  
+  Sieve functions based on work by Iannis Xenakis. Sieves are represented as
   a 2-vector of [modulo index].  U and I are used to create Union and
   Intersection Sieves. Sieves may also be nil, though are factored out when a
   Sieve is simplified, and generates no sequence when gen-sieve is called.
+
   
  Code Consulted:
    * C Code from \"Sieves\" article below.
@@ -12,6 +17,7 @@
  Literature:
    * Xenakis and Rahn. \"Sieves\". Perspectives of New Music, Vol. 28, No. 1
    (Winter, 1990), pp. 58-78.
+   * Xenakis. \"Formalized Music\". pp. 268-288.
   "
   (:require [clojure.java.io :refer :all]
             [clojure.string :refer [trim triml split]]))
