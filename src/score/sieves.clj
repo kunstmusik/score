@@ -151,3 +151,85 @@
     (when-not (nil? s)
       (filter #(element? s %) (range))))))
 
+;; ======
+
+(defn- compute-period
+  [pt pts]
+  (loop [m 1]
+    (let [ini (mod pt m)
+          period
+          (loop [[x & xs] pts
+                 ptval ini
+                 covered 0]
+            (if x
+              (cond
+                (< ptval x) nil
+                (= x ptval) (recur xs (+ ptval m) (inc covered))
+                :default (recur xs ptval covered))
+              [m ini covered]))]
+      (if (nil? period)
+        (recur (inc m)) 
+        period)))) 
+
+(defn- get-new-covered
+  [covered [m ini _] pts]
+  (loop [new-covered #{}
+         ptval ini
+         [x & xs] pts]
+    (if x
+      (if (= ptval x) 
+        (do 
+          (if (nil? (covered x))
+          (recur (conj new-covered x) (+ ptval m) xs)
+          (recur new-covered (+ ptval m) xs)))
+        (recur new-covered ptval xs)) 
+      new-covered)))
+
+(defn- get-analysis
+  [ordered-pts]
+  (->> 
+      ordered-pts 
+      (reduce 
+        (fn [[covered periods :as carry-val] pt]
+          (if (covered pt)
+            carry-val
+            (let [period (compute-period pt ordered-pts)
+                  new-covered (get-new-covered covered period ordered-pts)]
+              (if (not-empty new-covered)
+                [(into covered new-covered) (conj periods period)]
+                carry-val))))
+        [#{} []])
+      (second)))
+
+(defn- get-period
+  "Calculates period using modulo values from analyzed sieves."
+  [[x & xs]]
+  (loop [ret-m (first x)
+         [x & xs] xs]
+      (if x
+        (let [m (first x)]
+          (if (= ret-m m)
+            (recur (* ret-m (/ m (euclid m ret-m))) xs)
+            (recur (* ret-m (/ m (euclid ret-m m))) xs)))
+        ret-m)))
+
+(defn analyze-sieve
+  "Analyzes the formula of the sieve for a given sequence pts of number
+  values.  Sequence pts should be finite.
+  
+  Returns a map containing:
+  
+    * :analysis - vector of sieve vectors containing [modulus index
+  points-covered].  
+    * :sieve - Union sieve of analysis vectors 
+    * :period - period of the sieve"
+  [pts]
+  (let [ordered-pts (sort (into #{} pts))
+        analysis (get-analysis ordered-pts)
+        sieve (apply U (map butlast analysis))
+        period (get-period analysis)] 
+    {:analysis analysis
+     :sieve sieve
+     :period period}
+    ))
+

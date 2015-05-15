@@ -73,4 +73,10 @@
     (is (nil? (reduce-sieve (U (I [8 3] [8 4]) nil))))
     ))
 
-
+(deftest analyze-sieve-test
+  (testing "analyze sieve"
+    (is 
+      (= { :analysis [[30 3 4] [12 11 8]]
+         :sieve (U [30 3] [12 11])
+         :period 60 }
+       (analyze-sieve [3 11 23 33 35 47 59 63 71 83 93 95])))))
