@@ -77,6 +77,12 @@
   (testing "analyze sieve"
     (is 
       (= { :analysis [[30 3 4] [12 11 8]]
-         :sieve (U [30 3] [12 11])
-         :period 60 }
-       (analyze-sieve [3 11 23 33 35 47 59 63 71 83 93 95])))))
+          :sieve (U [30 3] [12 11])
+          :period 60 }
+         (analyze-sieve [3 11 23 33 35 47 59 63 71 83 93 95]))))
+  (testing "gen/analyze roundtrip"
+    (let [sieve (U [30 3] [12 11])] 
+      (is (= sieve 
+             (:sieve
+               (analyze-sieve (gen-sieve 12 (U [30 3] [12 11]))))
+             )))))

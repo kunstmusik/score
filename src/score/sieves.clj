@@ -226,7 +226,7 @@
   [pts]
   (let [ordered-pts (sort (into #{} pts))
         analysis (get-analysis ordered-pts)
-        sieve (apply U (map butlast analysis))
+        sieve (apply U (map #(into [] (butlast %)) analysis))
         period (get-period analysis)] 
     {:analysis analysis
      :sieve sieve
