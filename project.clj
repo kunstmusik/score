@@ -6,6 +6,13 @@
   :dependencies [[org.clojure/clojure "1.6.0"]]
 
   :profiles  { :dev  {
-                      :global-vars  {*warn-on-reflection* true} } }
+                      :global-vars  {*warn-on-reflection* true} } 
+
+              :profiling  {
+                           :plugins  [[lein-nodisassemble "0.1.3"]] 
+                           :dependencies  [[org.clojure/clojure "1.7.0-RC1"]] 
+                           :global-vars  {*warn-on-reflection* true
+                                          *unchecked-math* :warn-on-boxed }} 
+              }
   :scm {:name "git"
         :url "https://github.com/kunstmusik/score.git" })

@@ -38,7 +38,7 @@
 
 (defn rand-range 
   "Generates random value between low and high"
-  [low high]
+  [^double low ^double high]
   (let [rng (- high low)] 
     (fn [t]
       (+ low (* (Math/random) rng)) 
@@ -56,12 +56,14 @@
   value based-on time argument."
   [start dur & fields]
   (let [ gens (map wrap-generator fields) 
-        [instrfn startfn & r] gens]
+        [instrfn startfn & r] gens
+        dur (double dur)
+        start (double start)]
     (loop [cur-start 0.0 
            retval []]
       (if (< cur-start dur) 
         (let [i (instrfn cur-start)
-              xt (startfn cur-start)
+              ^double xt (startfn cur-start)
               note (into [i (+ start cur-start)] (map (fn [a] (a cur-start)) r))]
           (recur (+ cur-start xt) (conj retval note)))
         retval))))
