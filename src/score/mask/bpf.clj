@@ -3,7 +3,7 @@
      :doc "Break-point functions. Based on Andre Bartetzki's CMask." } 
   score.mask.bpf)
 
-(defn find-points 
+(defn- find-points 
   [t pts]
   (if (< t (ffirst pts))
     [(first pts) nil] 
@@ -14,13 +14,13 @@
           (recur b))
         [a nil]))))
 
-(defn interp-linear 
+(defn- interp-linear 
   [t [x1 y1] [x2 y2]]
   (let [m (/ (- t x1) (double (- x2 x1)))
         x (- y2 y1)]
     (+ y1 (* m x))))
 
-(defn interp-exponential 
+(defn- interp-exponential 
   [t ^double exp [x1 y1 :as pt1] [x2 y2 :as pt2]]
 
   (let [m (/ (- t x1) (double (- x2 x1)))]
@@ -38,7 +38,7 @@
     ))
   )
 
-(defn interp-cos
+(defn- interp-cos
   [t [x1 y1] [x2 y2]]
   (let [m (/ (- t x1) (double (- x2 x1)))
         cx (+ 0.5 (/ (Math/cos (+ Math/PI (* Math/PI m))) 2.0))

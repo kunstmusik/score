@@ -10,7 +10,7 @@
 
 ;; Functions for keyword conversions to MIDI notenum
 
-(def note-vals {\C 0 \D 2 \E 4 \F 5 \G 7 \A 9 \B 11} )
+(def ^:private NOTE-VALS {\C 0 \D 2 \E 4 \F 5 \G 7 \A 9 \B 11} )
 
 (defn- convert-modifier
   ([^String mod-str]
@@ -31,7 +31,7 @@
   (let [sym-str (.toUpperCase (name sym))
         sym-len (.length sym-str)
         note-name (get sym-str 0)
-        note (note-vals note-name)
+        note (NOTE-VALS note-name)
         modifier (.substring sym-str 1 (- sym-len 1)) 
         octave (Integer/parseInt (.substring sym-str (- sym-len 1))) ]
     (+ note (* 12 (- octave 4)) 60 (convert-modifier modifier)) 

@@ -2,10 +2,10 @@
   ^{:author "Steven Yi"
     :doc "Oscillator Generators, based on Andre Bartetzki's CMask" } 
   score.mask.oscillators
-  (:require [score.core :refer [wrap-generator]])
-  )
+  (:require [score.core :refer [wrap-generator]]))
 
-(def PI2 (* Math/PI 2.0))
+(def ^:private ^:const ^{:tag 'double} 
+  TWO_PI (* Math/PI 2.0))
 
 (defn- get-phase 
   [phaseinit t freq]
@@ -22,7 +22,7 @@
      (fn [t]
        (+ 0.5 
           (* 0.5 
-             (Math/sin (* PI2 (get-phase phase t (freqfn t))))))))))
+             (Math/sin (* TWO_PI (get-phase phase t (freqfn t))))))))))
 
 
 (defn cos 
@@ -36,7 +36,7 @@
      (fn [t]
        (+ 0.5 
           (* 0.5 
-             (Math/cos (* PI2 (get-phase phase t (freqfn t))))))))))
+             (Math/cos (* TWO_PI (get-phase phase t (freqfn t))))))))))
 
 
 (defn saw-up 

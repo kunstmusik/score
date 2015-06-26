@@ -4,7 +4,7 @@
   score.mask.mask
   (:require [score.core :refer [wrap-generator]]))
 
-(defn mask-value 
+(defn- mask-value 
   [low high value exp]
   (if (= exp 0.0)
     (+ low (* (- high low) value))  

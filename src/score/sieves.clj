@@ -29,9 +29,9 @@
 
 (defn- euclid 
   "Euclid's algorithm for computing the greatest common divisor"
-  [a1 a2]
+  ^long [^long a1 ^long a2]
   (loop [a1 a1 a2 a2]
-    (let [tmp (mod a1 a2)] 
+    (let [tmp (long (mod a1 a2))] 
       (if (zero? tmp)
       a2 
       (recur a2 tmp)))))
@@ -42,7 +42,7 @@
 ;  (/ (* a b) (euclid a b)))
 
 (defn- meziriac 
-  [c1 c2]
+  ^long [^long c1 ^long c2]
   (if (= c2 1)
     1
     (loop [t 1]
@@ -52,13 +52,13 @@
 
 (defn- reduce-intersection
   [s1 s2]
-  (let [[m1 i1] s1
-        [m2 i2] s2
+  (let [[^long m1 ^long i1] s1
+        [^long m2 ^long i2] s2
         d (euclid m1 m2)
-        i1' (mod i1 m1)
-        i2' (mod i2 m2)
-        c1 (/ m1 d)
-        c2 (/ m2 d)
+        i1' (long (mod i1 m1))
+        i2' (long (mod i2 m2))
+        c1 (quot m1 d)
+        c2 (quot m2 d)
         m3 (* d c1 c2)
         t (meziriac c1 c2)
         i3 (mod (+ i1' (* t (- i2' i1') c1)) m3)]
@@ -156,9 +156,9 @@
 (defn- compute-period
   [pt pts]
   (loop [m 1]
-    (let [ini (mod pt m)
+    (let [ini (long (mod pt m))
           period
-          (loop [[x & xs] pts
+          (loop [[^long x & xs] pts
                  ptval ini
                  covered 0]
             (if x
@@ -172,9 +172,9 @@
         period)))) 
 
 (defn- get-new-covered
-  [covered [m ini _] pts]
+  [covered [^long m ^long ini _] pts]
   (loop [new-covered #{}
-         ptval ini
+         ^long ptval ini
          [x & xs] pts]
     (if x
       (if (= ptval x) 
@@ -204,13 +204,13 @@
 (defn- get-period
   "Calculates period using modulo values from analyzed sieves."
   [[x & xs]]
-  (loop [ret-m (first x)
+  (loop [^long ret-m (first x)
          [x & xs] xs]
       (if x
-        (let [m (first x)]
+        (let [^long m (first x)]
           (if (= ret-m m)
-            (recur (* ret-m (/ m (euclid m ret-m))) xs)
-            (recur (* ret-m (/ m (euclid ret-m m))) xs)))
+            (recur (* ret-m (quot m (euclid m ret-m))) xs)
+            (recur (* ret-m (quot m (euclid ret-m m))) xs)))
         ret-m)))
 
 (defn analyze-sieve
