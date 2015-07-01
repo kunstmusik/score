@@ -10,7 +10,7 @@
 
               :profiling  {
                            :plugins  [[lein-nodisassemble "0.1.3"]] 
-                           :dependencies  [[org.clojure/clojure "1.7.0-RC1"]] 
+                           :dependencies  [[org.clojure/clojure "1.7.0"]] 
                            :global-vars  {*warn-on-reflection* true
                                           *unchecked-math* :warn-on-boxed }} 
               }
