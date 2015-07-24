@@ -117,7 +117,7 @@ would yield:
  [1 0.0 3.0 523.2511306011972 0.25])
 ```
 
-The [2 0] sieve used here with gen-sieve and an assumd 12-tone equal
+The [2 0] sieve used here with gen-sieve and an assumed 12-tone equal
 temperament tuning, would yield the first 7 scale degrees of a whole-tone
 scale.  The above score may then be used to generate a whole-tone chord,
 starting at time 0.0, with duration 3.0, and amplitude of 0.25 for each note of
