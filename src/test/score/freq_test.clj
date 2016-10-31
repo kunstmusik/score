@@ -19,6 +19,17 @@
     (is (= 70 (keyword->notenum :A#4)))
     ))
 
+(deftest sym->notenum-test
+  (testing "sym->notenum test"
+    (is (= 57 (sym->notenum 'A3)))
+    (is (= 60 (sym->notenum 'C4)))
+    (is (= 61 (sym->notenum 'C#4)))
+    (is (= 70 (sym->notenum 'Bb4)))
+    (is (= 70 (sym->notenum 'A#4)))
+    (is (= '(57 60 61 70 70) 
+           (map sym->notenum '(A3 C4 C#4 Bb4 A#4))))
+    ))
+
 (deftest hertz-test
   (testing "hertz"
     (is (= 440.0 (hertz :A4)))

@@ -6,6 +6,11 @@ change log follows the conventions of
 
 ## [Unreleased] 
 
+## Added
+
+* score.freq - made keyword-\>notenum and keyword-\>freq to also take in symbols,
+  added sym-\>notenum and sym-\>freq as additional functions that call the former
+
 
 ## [0.3.0] - 2015-07-24
 

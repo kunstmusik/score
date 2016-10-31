@@ -25,9 +25,9 @@
              (throw (Throwable. (str "Unknown note modifier: " c))))))))))
 
 (defn keyword->notenum
-  "Convert keyword to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)"
+  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)"
   [sym]
-  {:pre [(keyword? sym)]}
+  {:pre [(or (keyword? sym) (symbol? sym))]}
   (let [sym-str (.toUpperCase (name sym))
         sym-len (.length sym-str)
         note-name (get sym-str 0)
@@ -38,7 +38,17 @@
     ))
 
 (defn keyword->freq
-  "Convert keyword to frequency (i.e. :A4 is 440.0)"
+  "Convert keyword or symbol to frequency (i.e. :A4 is 440.0)"
+  [sym]
+  (midi->freq (keyword->notenum sym)))
+
+(defn sym->notenum
+  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)."
+  [sym]
+  (keyword->notenum sym))
+
+(defn sym->freq
+  "Convert keyword or symbol to frequency (i.e. :A4 is 440.0)"
   [sym]
   (midi->freq (keyword->notenum sym)))
 
