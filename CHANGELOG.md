@@ -8,9 +8,13 @@ change log follows the conventions of
 
 ## Added
 
-* score.freq - made keyword-\>notenum and keyword-\>freq to also take in symbols,
-  added sym-\>notenum and sym-\>freq as additional functions that call the former
-
+* score.lc
+  * new symbol-list-based mini-language for score writing. Designed for writing
+  music lines while live coding but useful for general note writing.
+* score.freq 
+  * made keyword-\>notenum and keyword-\>freq to also take in symbols, added
+    sym-\>notenum and sym-\>freq as additional functions that call the former
+  * extracted str-\>notenum function to work with strings
 
 ## [0.3.0] - 2015-07-24
 
