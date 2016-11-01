@@ -24,11 +24,10 @@
              \# (recur (+ v 1) (inc indx))
              (throw (Throwable. (str "Unknown note modifier: " c))))))))))
 
-(defn keyword->notenum
-  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)"
-  [sym]
-  {:pre [(or (keyword? sym) (symbol? sym))]}
-  (let [sym-str (.toUpperCase (name sym))
+(defn str->notenum
+  "Converts string to MIDI notenum (i.e. \"C4\" is 60, \"C#4\" is 61)"
+  [^String sym]
+  (let [sym-str (.toUpperCase sym)
         sym-len (.length sym-str)
         note-name (get sym-str 0)
         note (NOTE-VALS note-name)
@@ -36,6 +35,17 @@
         octave (Integer/parseInt (.substring sym-str (- sym-len 1))) ]
     (+ note (* 12 (- octave 4)) 60 (convert-modifier modifier)) 
     ))
+
+(defn str->freq
+  "Convert string to frequency (i.e. \"A4\" is 440.0)"
+  [sym]
+  (midi->freq (str->notenum sym)))
+
+(defn keyword->notenum
+  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)"
+  [sym]
+  {:pre [(or (keyword? sym) (symbol? sym))]}
+  (str->notenum (name sym)))
 
 (defn keyword->freq
   "Convert keyword or symbol to frequency (i.e. :A4 is 440.0)"
@@ -51,6 +61,7 @@
   "Convert keyword or symbol to frequency (i.e. :A4 is 440.0)"
   [sym]
   (midi->freq (keyword->notenum sym)))
+
 
 (defn pch->notenum  
   "Converts PCH notation to note number. Optional number of
