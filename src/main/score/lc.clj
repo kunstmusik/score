@@ -54,8 +54,10 @@
                 ">" (- (Long/parseLong v) start)
                 ":" (* dur (Long/parseLong v))
                  nil dur)
-             new-state (assoc state :start (+ start d))]
-         (cons [start d] (lazy-seq (lc! xs x new-state))))
+             ]
+         (if (pos? d)
+          (cons [start d] (lazy-seq (lc! xs x (assoc state :start (+ start d)))))
+          (lc! xs x state)))
 
        (re-matches notesym (name x))
        (let [[_ ^String n _ ^String v] (re-matches notesym (name x))
