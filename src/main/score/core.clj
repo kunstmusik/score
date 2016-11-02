@@ -224,3 +224,16 @@
         :else ;; single note
         (recur xs cur-start (concat output (with-start cur-start [x])))) 
       output )))
+
+;; sequence utils
+
+(defn repeat-seq
+  "Repeats sequence x number of times. Returns lazy-sequence."
+  ([^long num-repeat items] (repeat-seq num-repeat items items 0))
+  ([^long num-repeat head items ^long cur-iter]
+   (let [[x & xs] (seq items)]
+     (if x
+       (cons x (lazy-seq (repeat-seq num-repeat head xs cur-iter))) 
+       (let [new-iter (inc cur-iter)]
+         (when (< new-iter num-repeat)
+           (repeat-seq num-repeat head head new-iter)))))))

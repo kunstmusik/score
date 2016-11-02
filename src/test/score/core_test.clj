@@ -43,3 +43,8 @@
 ;  1 bd-pattern snare-pattern])
 
 ;(println (convert-measured-score score))
+
+
+(deftest repeat-seq-test
+  (= '(3 3 3) (repeat-seq 3 [3]))
+  (= '(3 4 3 4 3 4 3 4) (repeat-seq 4 [3 4])))

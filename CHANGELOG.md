@@ -15,6 +15,8 @@ change log follows the conventions of
   * made keyword-\>notenum and keyword-\>freq to also take in symbols, added
     sym-\>notenum and sym-\>freq as additional functions that call the former
   * extracted str-\>notenum function to work with strings
+* score.core
+  * repeat-seq - Repeats a sequence x number of times. Returns a lazy sequence.
 
 ## [0.3.0] - 2015-07-24
 
