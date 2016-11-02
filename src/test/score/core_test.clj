@@ -46,5 +46,6 @@
 
 
 (deftest repeat-seq-test
-  (= '(3 3 3) (repeat-seq 3 [3]))
-  (= '(3 4 3 4 3 4 3 4) (repeat-seq 4 [3 4])))
+  (testing "repeat-seq"
+    (is (= '(3 3 3) (repeat-seq 3 [3])))
+    (is (= '(3 4 3 4 3 4 3 4) (repeat-seq 4 [3 4])))))
