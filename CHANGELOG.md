@@ -11,6 +11,8 @@ change log follows the conventions of
 * score.lc
   * new symbol-list-based mini-language for score writing. Designed for writing
   music lines while live coding but useful for general note writing.
+* score.euclid
+  * implemented Euclidean Rhythm generator
 * score.freq 
   * made keyword-\>notenum and keyword-\>freq to also take in symbols, added
     sym-\>notenum and sym-\>freq as additional functions that call the former
