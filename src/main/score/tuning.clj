@@ -1,5 +1,5 @@
 (ns score.tuning
-  "Functions related to tunings, based Scala scale file format."
+  "Functions related to tunings, based on the Scala scale file format."
   (:require [clojure.java.io :refer :all]
             [clojure.string :refer [trim triml split]]))
 
