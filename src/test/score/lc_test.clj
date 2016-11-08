@@ -34,5 +34,22 @@
                  [2.0 14.0 c4freq]
                  ) 
            (lc! '(c4:2 c4:14 r>16)))))
-  )
+
+  (testing "octave carry"
+    (is (= (list [0.0 1.0 c4freq])
+                 (lc! '(c4))))
+    (is (= (list [0.0 1.0 c4freq])
+                 (lc! '(c))))
+    (is (= (list [0.0 1.0 c4freq])
+                 (lc! '(c))))
+    (is (= (list [0.0 1.0 c4freq]
+                 [1.0 1.0 (* 2 c4freq)]
+                 [2.0 1.0 c4freq])
+                 (lc! '(c c5 c4))))
+    (is (= (list [0.0 1.0 (sym->freq 'c5)]
+                 [1.0 2.0 (sym->freq 'd5)]
+                 [3.0 1.0 (sym->freq 'eb5)])
+                 (lc! '(c5 d:2 eb))))
+
+    ))
 
