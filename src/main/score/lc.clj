@@ -21,7 +21,7 @@
   #"([rR])(([:>])(\d+))?")
 
 (def notesym
-  #"([a-gA-G][\#bB]?(\d?))(:(\d+))?")
+  #"([a-gA-G][sSbB]?(\d?))(:(\d+))?")
 
 (defn lc!
   "Compiles musical symbol list into musical value list output.
