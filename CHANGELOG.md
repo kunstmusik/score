@@ -17,8 +17,18 @@ change log follows the conventions of
   * made keyword-\>notenum and keyword-\>freq to also take in symbols, added
     sym-\>notenum and sym-\>freq as additional functions that call the former
   * extracted str-\>notenum function to work with strings
+  * added keynum as generalized function to convert value (string, symbol,
+    keyword, PCH) to MIDI note number
 * score.core
   * repeat-seq - Repeats a sequence x number of times. Returns a lazy sequence.
+
+## Changed
+
+* score.freq
+  * keyword-\>notenum and related functions no longer support use of # to denote
+    "sharps". Users must modify existing code to use "s" instead. For example,
+    instead of :C#4, use :CS4. *Breaking Change*
+  * freq - updated to support strings and symbols.
 
 ## [0.3.0] - 2015-07-24
 

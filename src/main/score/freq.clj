@@ -21,11 +21,12 @@
          (let [c (get mod-str indx)]
            (case c
              \B (recur (+ v -1) (inc indx))
-             \# (recur (+ v 1) (inc indx))
+             \S (recur (+ v 1) (inc indx))
+             \# (throw (Throwable.  "# is no longer supported. Update code to use s instead."))
              (throw (Throwable. (str "Unknown note modifier: " c))))))))))
 
 (defn str->notenum
-  "Converts string to MIDI notenum (i.e. \"C4\" is 60, \"C#4\" is 61)"
+  "Converts string to MIDI notenum (i.e. \"C4\" is 60, \"Cs4\" is 61)"
   [^String sym]
   (let [sym-str (.toUpperCase sym)
         sym-len (.length sym-str)
@@ -42,7 +43,7 @@
   (midi->freq (str->notenum sym)))
 
 (defn keyword->notenum
-  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :C#4 is 61)"
+  "Converts keyword or symbol to MIDI notenum (i.e. :C4 is 60, :Cs4 is 61)"
   [sym]
   {:pre [(or (keyword? sym) (symbol? sym))]}
   (str->notenum (name sym)))
@@ -77,16 +78,24 @@
   ([pch]
    (midi->freq (- (pch->notenum pch 12) 36))))
 
+(defn keynum
+  "General function for converting value a to MIDI notenumber.  It will convert
+  keywords, PCH, strings, and symbols, and return any other value. Assumes PCH 
+  is 12 TET with [8 0] as Middle-C (MIDI Note 60)."
+  [a]
+   (cond 
+    (keyword? a) (keyword->notenum a) 
+    (string? a) (str->notenum a)
+    (symbol? a) (sym->notenum a)
+    (and (sequential? a) (= 2 (count a))) (- (pch->notenum a) 36) 
+    :else a)
+  )
 
 (defn hertz 
   "General function for converting value a to frequency.  It will convert
-  keywords, integers, PCH, and return any other value."
+  keywords, MIDI note numbers, PCH, strings, and symbols."
   [a]
-  (cond 
-    (keyword? a) (keyword->freq a) 
-    (integer? a) (midi->freq a) 
-    (and (sequential? a) (= 2 (count a))) (pch->freq a) 
-    :else a))
+  (midi->freq (keynum a)))
 
 
 ;; functions related to PCH format: [oct pch]

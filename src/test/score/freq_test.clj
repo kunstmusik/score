@@ -14,27 +14,38 @@
   (testing "keyword->notenum test"
     (is (= 57 (keyword->notenum :A3)))
     (is (= 60 (keyword->notenum :C4)))
-    (is (= 61 (keyword->notenum :C#4)))
+    (is (= 61 (keyword->notenum :Cs4)))
     (is (= 70 (keyword->notenum :Bb4)))
-    (is (= 70 (keyword->notenum :A#4)))
-    ))
+    (is (= 70 (keyword->notenum :As4)))
+    )
+  (testing "# no longer supported as note modifier"
+    (is (thrown? Throwable (keyword->notenum :A#4))))
+  )
 
 (deftest sym->notenum-test
   (testing "sym->notenum test"
     (is (= 57 (sym->notenum 'A3)))
     (is (= 60 (sym->notenum 'C4)))
-    (is (= 61 (sym->notenum 'C#4)))
-    (is (= 70 (sym->notenum 'Bb4)))
-    (is (= 70 (sym->notenum 'A#4)))
+    (is (= 61 (sym->notenum 'Cs4)))
+    (is (= 72 (sym->notenum 'Bs4)))
+    (is (= 70 (sym->notenum 'As4)))
     (is (= '(57 60 61 70 70) 
-           (map sym->notenum '(A3 C4 C#4 Bb4 A#4))))
+           (map sym->notenum '(A3 C4 Cs4 Bb4 As4))))
+    ))
+
+
+(deftest keynum-test
+  (testing "keynum"
+    (is (= 69 (keynum :A4)))
+    (is (= 57 (keynum 57)))  
+    (is (= 69 (keynum [8 9])))  
     ))
 
 (deftest hertz-test
   (testing "hertz"
     (is (= 440.0 (hertz :A4)))
     (is (= 220.0 (hertz 57)))  
-    (is (= 440.0 (hertz 440.0)))  
+    (is (= 440.0 (hertz 'a4)))  
     (is (= 440.0 (hertz [8 9])))  
     ))
 
@@ -47,8 +58,8 @@
     (is (= [[8 0] [8 2]]
            (pch-interval-seq [8 0] [2])))
     (is (= [[8 0]]
-           (pch-interval-seq [8 0] [])))
-    )
+           (pch-interval-seq [8 0] []))))
+  
   (testing "pch-interval-seq test with scale-degrees"
     (is (= [[8 0] [8 2] [8 3] [8 1]]
            (pch-interval-seq [8 0] [2 1 -2] 12))) 
