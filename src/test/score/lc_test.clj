@@ -29,7 +29,7 @@
                  [3.0 13.0]) 
            (lc! '(c4:2 c4 r>16)))))
 
-  (testing "no rest using until-notation when duration passed"
+  (testing "no rest generated using until-notation when duration passed"
     (is (= (list [0.0 2.0 c4freq]
                  [2.0 14.0 c4freq]
                  ) 
@@ -51,5 +51,15 @@
                  [3.0 1.0 (sym->freq 'eb5)])
                  (lc! '(c5 d:2 eb))))
 
-    ))
+    (testing "relative octaves"
+      
+      (is (= (list [0.0 1.0 c4freq])
+             (lc! '(c4))))
+      (is (= (list [0.0 1.0 c4freq]
+                   [1.0 1.0 (hertz 'c5)])
+             (lc! '(c c+))))
+      (is (= (list [0.0 2.0 (hertz 'c5)]
+                   [2.0 1.0 c4freq])
+             (lc! '(c5:2 c-))))
+      )))
 
