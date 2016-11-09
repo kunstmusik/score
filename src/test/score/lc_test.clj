@@ -49,17 +49,24 @@
     (is (= (list [0.0 1.0 (sym->freq 'c5)]
                  [1.0 2.0 (sym->freq 'd5)]
                  [3.0 1.0 (sym->freq 'eb5)])
-                 (lc! '(c5 d:2 eb))))
+                 (lc! '(c5 d:2 eb)))))
 
-    (testing "relative octaves"
-      
-      (is (= (list [0.0 1.0 c4freq])
-             (lc! '(c4))))
-      (is (= (list [0.0 1.0 c4freq]
-                   [1.0 1.0 (hertz 'c5)])
-             (lc! '(c c+))))
-      (is (= (list [0.0 2.0 (hertz 'c5)]
-                   [2.0 1.0 c4freq])
-             (lc! '(c5:2 c-))))
-      )))
+  (testing "relative octaves"
+
+    (is (= (list [0.0 1.0 c4freq])
+           (lc! '(c4))))
+    (is (= (list [0.0 1.0 c4freq]
+                 [1.0 1.0 (hertz 'c5)])
+           (lc! '(c c+))))
+    (is (= (list [0.0 2.0 (hertz 'c5)]
+                 [2.0 1.0 c4freq])
+           (lc! '(c5:2 c-)))))
+ 
+ (testing "until-notation for notes"
+    (is (= (list [0.0 1.0 (hertz 'c5)]
+                 [1.0 3.0 (hertz 'c5)])
+         (lc! '(c5 c5>4))))
+    (is (= (list [0.0 4.0 (hertz 'c5)])
+         (lc! '(c5:4 c5>4))))
+    ))
 

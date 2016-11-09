@@ -21,7 +21,7 @@
   #"([rR])(([:>])(\d+))?")
 
 (def notesym
-  #"([a-gA-G][sSbB]?)([\d+-])?(:(\d+))?")
+  #"([a-gA-G][sSbB]?)([\d+-])?(([:>])(\d+))?")
 
 (defn lc!
   "Compiles musical symbol list into musical value list output.
@@ -58,9 +58,13 @@
           (lc! xs oct state)))
 
        (re-matches notesym (name x))
-       (let [[_ ^String n ^String found-oct _ ^String v] 
+       (let [[_ ^String n ^String found-oct 
+              _ ^String v-type ^String v] 
              (re-matches notesym (name x))
-             d (if v (* dur (Long/parseLong v)) dur)
+             d (case v-type
+                ">" (- (Long/parseLong v) start)
+                ":" (* dur (Long/parseLong v))
+                 nil dur) 
              new-state (assoc state :start (+ start d))
              new-oct (if (not (blank? found-oct)) 
                        (case found-oct
@@ -69,8 +73,10 @@
                          (Long/parseLong found-oct)) 
                        oct)
              note-name (str n new-oct)]
-         (cons [start d (str->freq note-name)] 
-               (lazy-seq (lc! xs new-oct new-state))))
+         (if (pos? d)
+          (cons [start d (str->freq note-name)] 
+               (lazy-seq (lc! xs new-oct new-state))) 
+          (lc! xs new-oct state)))
 
        :else
        (throw (Exception. (str "Unexpected symbol: " x)))
