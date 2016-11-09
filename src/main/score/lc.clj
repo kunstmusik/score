@@ -5,23 +5,15 @@
             [clojure.string :refer [blank?]]
             ))
 
-(defn- dots 
-  "Count dots and returns rest of sequence. Returns [num-dots rest]."
-  [symlist]
-  (loop [num-dots 0 syms (seq symlist)]
-    (if syms
-     (let [[x & xs] syms]
-      (if (= '. x)
-        (recur (inc num-dots) xs)
-        (vector num-dots syms))) 
-      (vector num-dots nil))))
-
-
-(def restsym
+(def ^:private restsym
   #"([rR])(([:>])(\d+))?")
 
-(def notesym
+(def ^:private notesym
   #"([a-gA-G][sSbB]?)([\d+-])?(([:>])(\d+))?")
+
+
+;; TODO - design and implement chord notation
+
 
 (defn lc!
   "Compiles musical symbol list into musical value list output.
