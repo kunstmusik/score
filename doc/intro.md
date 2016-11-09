@@ -11,15 +11,15 @@ The design of the library is based on score functions designed and used by the a
 ## Basics
 * [Basics of Score Writing Using Lists](basics.md)
 
-## Values
-* [Pitch and Scales](pitch.md)
-* [Amplitude](amplitude.md)
+## Musical Values
+* [Musical Values](musical_values.md)
+* [Euclidean Rhythms](euclid.md)
 
 ## Explicit Scoring
 * [Measured and Timed Scores](measured_score.md)
 
-## Score Manipulation
-* [Score Manipulation](manipulation.md)
+## Score Transformation 
+* [Score Transformation](transformation.md)
 
 ## Generation
 * [Score Generation](score_gen.md)
