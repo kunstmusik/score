@@ -1,6 +1,16 @@
 # Score Generation
 
-Score's primary tool for generating notes is the gen-notes function:
+Score includes two primary ways for generating note lists:
+`gen-notes` and `gen-notes2`. The first is based
+on Clojure sequences and is modeled on SC3’s Pattern Library. The latter
+uses higher-order programming and time-based generator functions and is
+modeled on CMask.
+
+
+## gen-notes
+
+
+Score's primary tool for generating notes is the `gen-notes` function:
 
 ```clojure
 (defn- score-arg  [a]
@@ -17,9 +27,26 @@ Score's primary tool for generating notes is the gen-notes function:
     (apply map (fn [& a] (into [] a)) pfields)))
 ```
 
-It works by using a given set of sequences, functions, or values, and generating a list using those values. This functionality is similar to using SuperCollider's [Patterns](http://doc.sccode.org/Tutorials/Getting-Started/16-Sequencing-with-Patterns.html) library.
+Given a set of fields --- which may be sequences, functions,
+or values --- `gen-notes` will generate a list of notes,
+where the value of each note is generated using the value
+from each field. If the field is a sequence, each item of the
+sequence will be used. If the field is a function, it will be
+wrapped into a sequence using Clojure’s `repeatedly`
+function. Finally, if a single value is given, an infinite
+list comprised of that value is created using the `repeat`
+function.
 
-## Example
+Because `gen-notes` uses `map`, the returned value is a lazy
+sequence. If all fields given to `gen-notes` are infinite
+sequence, then the resulting sequence is also infinite. If any of the
+fields are finite sequences, then the resulting sequence of notes will
+have a length equal to the shortest field sequence. The user should use
+the same care when using `gen-notes` as they would with regular Clojure
+sequences in regards to infinite sequence generation.
+
+
+### Example
 
 The following example:
 
@@ -37,6 +64,144 @@ When evaluated will generate the following list of lists:
  [1 4 1.0 5 10])                                                                              
 ```
 
-In the call to gen-notes, the first and third argument are constants, 1 and 1.0.  These values are repeated for each generated note.  For the sequences used in the 2nd, 4th, and 5th argument, one value is used per-note, then the next values from those sequences is used, and so on.  Score generation is completed when the end of one of the sequences from the arguments has been reached. 
+In the call to gen-notes, the first and third argument are constants, 1 and
+1.0.  These values are repeated for each generated note.  For the sequences
+used in the 2nd, 4th, and 5th fields, the first value from each sequence is
+used for the first generated note, then the next values used for the second
+note, and so on. As the 4th field is a finite list with the shortest number of
+elements, only five notes will be generated.
 
-To note, because gen-notes uses map, the returned value is a lazy sequence. In general, one can use gen-notes as an infinite sequence, but more often than not one should use at least one finite-sequence as an argument to gen-notes.
+
+## gen-notes2 and score.mask
+
+Score offers an alternate model for generating notes, `gen-notes2`,
+based on time-based generator functions:
+
+```clojure
+    (defn- const
+      "Returns a function that generates a constant value."
+      [val]
+      (fn [t]
+        val))
+
+    (defn seq->gen
+      "Converts a sequence into a generator function with time argument."
+      [vs]
+      (let [curval (atom vs)]
+        (fn [t]
+          (let [[a & b] @curval]
+            (swap! curval rest)
+            a
+            ))))
+
+    (defn wrap-generator
+      "Utility function to convert argument into a generator function
+      if not so already."
+      [f]
+      (cond
+        (seq? f) (seq->gen f)
+        (fn? f) f
+        :else (const f)))
+
+    (defn gen-notes2
+      "Generate notes with time-based generator functions. This score
+      generation method is based on CMask. Given fields should be
+      single-arg functions that generate a value based on time argument."
+      [start dur & fields]
+      (let [gens (map wrap-generator fields)
+            [instrfn startfn & r] gens
+            dur (double dur)
+            start (double start)]
+        (loop [cur-start 0.0
+               retval []]
+          (if (< cur-start dur)
+            (let [i (instrfn cur-start)
+                  ^double xt (startfn cur-start)
+                  note (into [i (+ start cur-start)]
+                         (map (fn [a] (a cur-start)) r))]
+              (recur (+ cur-start xt) (conj retval note)))
+            retval))))
+```
+
+Given an initial start time, duration, and set of fields --- which may be
+sequences, functions, or values --- `gen-notes2` will generate
+a list of notes, where the values of each note is generated using the
+values from each field. Unlike `gen-notes`, fields in
+`gen-notes2` are single-argument generator functions that
+take in a time value. If the field is a sequence,
+`seq-&gt;gen` will be called to convert the sequence into a
+generator function. If the field is a function, it is assumed to already
+be a generator function and used as-is. Finally, if a single value is
+given, an infinite generator function is produced using the
+`const` function.
+
+`gen-notes2` is modeled on CMask’s processing model, where
+`gen-notes2` maps to CMask’s *fields*, and field arguments to
+`gen-notes2` map to CMask’s *parameters*. For each note, all
+fields will be called given the current start time value (`cur-start`).
+The value generated by the second field’s value will be especially used
+to increment `cur-start` for the next note generated. Generation of
+notes will continue until the `cur-start` value is greater
+than or equal to the `dur` argument.
+
+All of CMask’s parameters --- oscillators, items, probabilities, and
+break-point functions --- have been implemented as generator functions
+packaged in sub-namespaces of the primary `score.mask`
+namespace. Additionally, CMask’s masks, quantisers, and accumulators
+have also been implemented as generator functions that decorate other
+generator functions. The generator functions provided by
+`score.mask`, together with `gen-notes2`, provide
+a complete implementation of CMask’s capabilities within Score.
+
+As with `gen-notes`, the user should take special care of using infinite
+generator functions. This is especially important as
+`gen-notes2` eagerly generates the resulting note list. If a
+finite generator function is not provided, calling
+`gen-notes2` will result in an infinite loop.
+
+### Example
+
+```clojure
+user=> (gen-notes2 0.0 4.0
+              4 0.5 3
+              (rand-range 0.1 20)
+              (item-cycle [1 2 3])
+              (swing [8 9 10])
+              (heap [10 100 400])
+              (rand-item [50 500 5000]))
+[[4 0.0 3 0.5357457756267113 1 8 400 5000]
+ [4 0.5 3 16.091049682038065 2 9 10 500]
+ [4 1.0 3 5.7949011228034 3 10 100 50]
+ [4 1.5 3 14.749602188427321 1 9 10 50]
+ [4 2.0 3 14.01972320806139 2 8 100 500]
+ [4 2.5 3 10.87719434050349 3 9 400 500]
+ [4 3.0 3 17.53310173768086 1 10 400 5000]
+ [4 3.5 3 4.218225062429189 2 9 10 500]]
+```
+
+The above shows an example usage of
+`gen-notes2` and its results. The first two arguments are the
+initial start time (0.0) and duration (4.0). The next 3 values are
+constants. Note that while the second field always returns 0.5, the
+generated value in the note list is the `cur-start` value
+calculated in the loop. The 4th through 8th fields are all time-based
+generator functions created by calling `score.mask`
+functions. For each of these fields, calling the `score.mask`
+function returns another function that takes in a time argument. This is
+shown in the implementation of `rand-item`: 
+
+```clojure
+(defn rand-item
+  "Generates values as random permutations of a sequence"
+  [vs]
+  (fn [t] 
+    (rand-nth vs)))
+```
+
+The anonymous function returned by `rand-item` has a single
+argument `t`. In this case, the `t` argument is not used. Instead, the
+`vs` argument, which is closed over by the anonymous
+function, is used. While generator functions for use with
+`gen-notes2` must take in a single time argument, they are
+not required to use it.
+

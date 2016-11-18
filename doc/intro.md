@@ -1,14 +1,15 @@
 # Introduction to Score
 
-Score is a library of functions for creating musical scores as list data. (To note, for the purpose of this documentation, the term list is used synonymously with Clojure sequences.) It is based on the note as a list of values, and higher level organization of notes as lists of lists. It also contains useful value convertors for expressing things like pitch, scales, tunings, and amplitude.  Because it is based on standard Clojure data structures, the library is designed to offer tools to the user without restricting the user to those tools.  The user is encouraged to draw upon their standard Clojure skills to customize their score-writing experience to their own way of looking at and working with musical scores.
+Score is a library of functions for creating musical scores as list data. (To note, for the purpose of this documentation, the term list is used synonymously with Clojure sequences.) It is based on the *note* as a list of values, and *scores* --- or note lists --- as a higher level organization of notes as lists of lists. Score contains useful musical functions for concepts such as pitch, scales, tunings, and amplitude.  It also contains functions for generating, transforming, and organising scores. Because it is based on standard Clojure data structures, the library is designed to interoperate well with other Clojure functions and libraries that also work with lists. Score provides numerous points of extensibility and encourages users to draw upon their Clojure skills to customise their score-writing experience to their own taste.
 
-The design of the library is based on score functions designed and used by the author in other contexts/languages. This project also draws heavily on:
+The design of the library is based on score functions designed and used by the author in other contexts/languages. This project also draws heavily upon:
 
 * [Common Music](http://commonmusic.sourceforge.net/) 
 * [Super Collider - Patterns Library](http://doc.sccode.org/Tutorials/Getting-Started/16-Sequencing-with-Patterns.html) 
 * [CMask](http://www2.ak.tu-berlin.de/~abartetzki/CMaskMan/CMask-Manual.htm) 
 
 ## Basics
+* [Design](design.md)
 * [Basics of Score Writing Using Lists](basics.md)
 
 ## Musical Values
