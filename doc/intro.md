@@ -16,16 +16,20 @@ The design of the library is based on score functions designed and used by the a
 * [Musical Values](musical_values.md)
 * [Euclidean Rhythms](euclid.md)
 
-## Explicit Scoring
-* [Measured and Timed Scores](measured_score.md)
-
-## Score Transformation 
-* [Score Transformation](transformation.md)
-
 ## Generation
 * [Score Generation](score_gen.md)
 * [Mask](mask.md)
 * [Sieves](sieves.md)
+
+## Score Transformation 
+* [Score Transformation](transformation.md)
+
+## Score Organization 
+* [Score Organization](score_organization.md)
+
+## Score Mapping
+* [Score Mapping](score_mapping.md)
+
 
 ## Examples 
 * [Working with Csound](csound.md)
