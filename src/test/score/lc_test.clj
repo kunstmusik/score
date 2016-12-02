@@ -87,5 +87,15 @@
                            (hertz 'g6)]]
                  [4.0 1.0 (hertz 'c5)])
          (lc! '([c5>4 g+] c))))
+
+  (testing "MIDI values"
+    (is (= (list [0.0 1.0 60]
+                 [1.0 1.0 62]
+                 [2.0 1.0 63])
+           (lc! '(c d eb) str->notenum))))
+    (is (= (list [0.0 1.0 [60 64 67]]
+                 [1.0 1.0 62])
+           (lc! '([c e g] d) str->notenum))) 
+
     )
 

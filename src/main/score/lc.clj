@@ -14,7 +14,6 @@
 (def ^:private just-notesym
   #"([a-gA-G][sSbB]?)([\d+-])?")
 
-
 ;; TODO - refactor out note symbol and rest processing
 
 (defn lc!
@@ -27,8 +26,10 @@
 
   [start dur]
   "
-  ([symlist] (lc! symlist 4 {:start 0.0 :dur 1.0}))
-  ([symlist oct state]
+  ([symlist] (lc! symlist str->freq))
+  ([symlist convert-note] 
+   (lc! symlist 4 {:start 0.0 :dur 1.0} convert-note))
+  ([symlist oct state convert-note]
  
    (let [[x & xs] symlist
          start (:start state)
@@ -38,7 +39,7 @@
        (nil? x) nil
 
        (number? x)
-       (lc! xs oct (assoc state :dur x))
+       (lc! xs oct (assoc state :dur x) convert-note)
 
        (vector? x)
        (let [[y & ys] x
@@ -76,9 +77,9 @@
                     (recur new-oct ps (conj out note-name))) 
                  out))]
            (if (pos? d)
-            (cons [start d (mapv str->freq (into [note-name] rest-names))] 
-                 (lazy-seq (lc! xs new-oct new-state))) 
-            (lc! xs new-oct state)) 
+            (cons [start d (mapv convert-note (into [note-name] rest-names))] 
+                 (lazy-seq (lc! xs new-oct new-state convert-note))) 
+            (lc! xs new-oct state convert-note)) 
 
          )
 
@@ -90,8 +91,9 @@
                  nil dur)]
          (if (pos? d)
           (cons [start d] 
-                (lazy-seq (lc! xs oct (assoc state :start (+ start d)))))
-          (lc! xs oct state)))
+                (lazy-seq (lc! xs oct (assoc state :start (+ start d)) 
+                               convert-note)))
+          (lc! xs oct state convert-note)))
 
        (re-matches notesym (name x))
        (let [[_ ^String n ^String found-oct 
@@ -110,9 +112,9 @@
                        oct)
              note-name (str n new-oct)]
          (if (pos? d)
-          (cons [start d (str->freq note-name)] 
-               (lazy-seq (lc! xs new-oct new-state))) 
-          (lc! xs new-oct state)))
+          (cons [start d (convert-note note-name)] 
+               (lazy-seq (lc! xs new-oct new-state convert-note))) 
+          (lc! xs new-oct state convert-note)))
 
        :else
        (throw (Exception. (str "Unexpected symbol: " x)))
