@@ -67,6 +67,25 @@
                  [1.0 3.0 (hertz 'c5)])
          (lc! '(c5 c5>4))))
     (is (= (list [0.0 4.0 (hertz 'c5)])
-         (lc! '(c5:4 c5>4))))
-    ))
+         (lc! '(c5:4 c5>4)))))
+ 
+
+
+ (testing "chords"
+    (is (= (list [0.0 1.0 (hertz 'c5)]
+                 [1.0 3.0 [(hertz 'c5) 
+                           (hertz 'g5)]])
+         (lc! '(c5 [c5>4 g] )))))
+    (is (= (list 
+                 [0.0 4.0 [(hertz 'c5) 
+                           (hertz 'g5)]]
+                 [4.0 1.0 (hertz 'c5)])
+         (lc! '([c5>4 g] c))))
+    
+    (is (= (list 
+                 [0.0 4.0 [(hertz 'c5) 
+                           (hertz 'g6)]]
+                 [4.0 1.0 (hertz 'c5)])
+         (lc! '([c5>4 g+] c))))
+    )
 

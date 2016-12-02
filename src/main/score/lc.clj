@@ -11,9 +11,11 @@
 (def ^:private notesym
   #"([a-gA-G][sSbB]?)([\d+-])?(([:>])(\d+))?")
 
+(def ^:private just-notesym
+  #"([a-gA-G][sSbB]?)([\d+-])?")
 
-;; TODO - design and implement chord notation
 
+;; TODO - refactor out note symbol and rest processing
 
 (defn lc!
   "Compiles musical symbol list into musical value list output.
@@ -37,6 +39,48 @@
 
        (number? x)
        (lc! xs oct (assoc state :dur x))
+
+       (vector? x)
+       (let [[y & ys] x
+             [_ ^String n ^String found-oct 
+                            _ ^String v-type ^String v] 
+             (re-matches notesym (name y))
+             d (case v-type
+                 ">" (- (Long/parseLong v) start)
+                 ":" (* dur (Long/parseLong v))
+                 nil dur) 
+             new-state (assoc state :start (+ start d))
+             new-oct (if (not (blank? found-oct)) 
+                       (case found-oct
+                         "+"  (inc oct)
+                         "-" (dec oct)
+                         (Long/parseLong found-oct)) 
+                       oct)
+             note-name (str n new-oct)
+
+             rest-names 
+             (loop [oct new-oct
+                    [p & ps] ys
+                    out []]
+               (if p
+                 (let [[_ ^String n ^String found-oct]
+                       (re-matches just-notesym (name p))
+                       new-oct (if (not (blank? found-oct)) 
+                                 (case found-oct
+                                   "+"  (inc oct)
+                                   "-" (dec oct)
+                                   (Long/parseLong found-oct)) 
+                                 oct)
+                       note-name (str n new-oct)
+                       ]
+                    (recur new-oct ps (conj out note-name))) 
+                 out))]
+           (if (pos? d)
+            (cons [start d (mapv str->freq (into [note-name] rest-names))] 
+                 (lazy-seq (lc! xs new-oct new-state))) 
+            (lc! xs new-oct state)) 
+
+         )
 
        (re-matches restsym (name x))
        (let [[_ _ _ ^String v-type ^String v] (re-matches restsym (name x))
