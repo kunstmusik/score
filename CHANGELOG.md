@@ -9,8 +9,9 @@ change log follows the conventions of
 ## Added
 
 * score.lc
-  * new symbol-list-based mini-language for score writing. Designed for writing
-  music lines while live coding but useful for general note writing.
+  * lc! - new symbol-list-based mini-language for score writing. Designed for
+    writing music lines while live coding but useful for general note list
+    writing.
 * score.euclid
   * implemented Euclidean Rhythm generator
 * score.freq 
