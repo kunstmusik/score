@@ -11,6 +11,10 @@ modeling scores, as well as working with multiple backends.
 
 For more information, please see the [website](http://kunstmusik.github.com/score). 
 
+Documentation provided within the [doc](docs/intro.md) folder. 
+
+ChangeLog viewable [here](CHANGELOG.md).
+
 ## License
 
 Copyright © 2014 Steven Yi 

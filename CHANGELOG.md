@@ -14,6 +14,9 @@ change log follows the conventions of
     writing.
 * score.euclid
   * implemented Euclidean Rhythm generator
+* score.beats
+  * functions for creating beat sequences (pats) of 1's and 0's or beat sets
+  of beat indices. Work with source beat strings or hexadecimal strings.
 * score.freq 
   * made keyword-\>notenum and keyword-\>freq to also take in symbols, added
     sym-\>notenum and sym-\>freq as additional functions that call the former
