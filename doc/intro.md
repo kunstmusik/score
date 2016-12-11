@@ -14,6 +14,7 @@ The design of the library is based on score functions designed and used by the a
 
 ## Musical Values
 * [Musical Values](musical_values.md)
+* [Beat Notation](beats.md)
 * [Euclidean Rhythms](euclid.md)
 
 ## Generation
