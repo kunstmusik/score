@@ -61,11 +61,15 @@
 
 (deftest reduce-sieve-test
   (testing "reduce-sieve"
-    (is (= [4 3] (reduce-sieve (I [4 3] nil))))
-    (is (= [4 3] (reduce-sieve (I nil [4 3]))))
+    (is (= nil (reduce-sieve (I [4 3] nil))))
+    (is (= nil (reduce-sieve (I nil [4 3]))))
+    (is (= nil (reduce-sieve (I [4 2] [4 3]))))
     (is (= [4 3] (reduce-sieve (I [4 3] [4 3]))))
     (is (= [8 3] (reduce-sieve (I [8 3] [4 3]))))
     (is (nil? (reduce-sieve (I [8 3] [8 4]))))
+
+    (is (= [4 3] (reduce-sieve (I [4 3] (I [4 3] [4 3])))))
+    (is (= nil (reduce-sieve (I [4 3] (I [4 3] [4 2])))))
 
     (is (= [4 3] (reduce-sieve (U [4 3] nil))))
     (is (= [4 3] (reduce-sieve (U nil [4 3]))))

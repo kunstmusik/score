@@ -34,6 +34,14 @@ change log follows the conventions of
     instead of :C#4, use :CS4. *Breaking Change*
   * freq - updated to support strings and symbols.
 
+## Fixed
+
+* score.sieves
+  * Intersections did not compute correctly when dealing with nil sieves, which 
+    could be either provided by user or when sub-intersection produced a nil 
+    sieve
+
+
 ## [0.3.0] - 2015-07-24
 
 ### Added

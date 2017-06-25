@@ -13,6 +13,7 @@
    * C Code from \"Sieves\" article below.
    * Haskell Music Theory (https://hackage.haskell.org/package/hmt-0.15) 
    * athenaCL (http://www.flexatone.org/athena.html) 
+   * Music21 (http://web.mit.edu/music21/)
  
  Literature:
    * Xenakis and Rahn. \"Sieves\". Perspectives of New Music, Vol. 28, No. 1
@@ -101,12 +102,12 @@
     (and (element? l n) (element? r n)))
   (reduce-sieve [s]
     (cond
-      (nil? r) l
+      (or (nil? r) (nil? l)) nil 
       (= l r) l
       (and (vector? l) (vector? r))
       (reduce-intersection l r)
       :default
-      (reduce-aggregate ->Intersection l r)))
+      (reduce-sieve (Intersection. (reduce-sieve l) (reduce-sieve r)))))
   (normalize [s]
     (Intersection. (normalize l) (normalize r))))
 
@@ -233,3 +234,12 @@
      :period period}
     ))
 
+
+;; ======
+
+
+#_(defn gen-sieve-period
+  "Generate sequence using sieve. Only produces values for one period of the sieve."
+  [sieve]
+  (let [rsieve (reduce-sieve sieve)]
+    (gen-sieve (:period analysis) sieve)))
