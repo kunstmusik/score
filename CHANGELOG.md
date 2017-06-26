@@ -25,6 +25,8 @@ change log follows the conventions of
     keyword, PCH) to MIDI note number
 * score.core
   * repeat-seq - Repeats a sequence x number of times. Returns a lazy sequence.
+* score.sieves
+  * added period function to Sieves protocol to calculate period of sieve
 
 ## Changed
 

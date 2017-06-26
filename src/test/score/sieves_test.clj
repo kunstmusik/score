@@ -90,3 +90,18 @@
              (:sieve
                (analyze-sieve (gen-sieve 12 (U [30 3] [12 11]))))
              )))))
+
+(deftest period-test
+  (testing "Period calculations for sieves"
+    (is (= 0 (period nil))) 
+    (is (= 4 (period [4 1]))) 
+    (is (= 4 (period (U [4 3] [4 2])))) 
+    (is (= 12 (period (U [4 3] [3 1])))) 
+    (is (= 20 (period (U [5 3] [4 1])))) 
+    (is (= 20 (period (I [5 3] [4 1])))) 
+    (is (= 20 (period (I [4 1] (I [5 3] [4 1]))))) 
+    (is (= 60 (period (I [3 1] (I [5 3] [4 1]))))) 
+    (is (= 0 (period (I [3 1] (I [4 3] [4 1]))))) 
+    (is (= 0 (period (U [3 1] (I [4 3] [4 1]))))) 
+    (is (= 10 (period (U [5 1] (U [2 0] [2 1]))))) 
+    ))

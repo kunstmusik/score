@@ -74,7 +74,8 @@
   "Protocol for Sieves"
   (element? [s n] "Determines if number n is an element of this Sieve")
   (reduce-sieve [s] "Reduces the Sieve to its simplest form")
-  (normalize [s] "Reduces Sieves in [mod index] form to its normalized form"))
+  (normalize [s] "Reduces Sieves in [mod index] form to its normalized form")
+  (period [s] "Returns the period of the Sieve."))
 
 (defn- reduce-aggregate
   [aggregate-fn l r]
@@ -94,28 +95,47 @@
   (reduce-sieve [s]
     (reduce-aggregate ->Union l r))
   (normalize [s]
-    (Union. (normalize l) (normalize r))))
+    (Union. (normalize l) (normalize r)))
+  (period [s]
+    (let [lr (reduce-sieve (normalize l))
+          rr (reduce-sieve (normalize r))
+          lp (period lr)
+          rp (period rr)]
+    (if (or (zero? lp) (zero? rp))
+        0
+        (* lp (quot rp (euclid lp rp)))))))
 
 (defrecord Intersection [l r]
   Sieve 
   (element? [s n]
     (and (element? l n) (element? r n)))
   (reduce-sieve [s]
+    (let [l' (reduce-sieve (normalize l))
+          r' (reduce-sieve (normalize r))]
     (cond
-      (or (nil? r) (nil? l)) nil 
-      (= l r) l
-      (and (vector? l) (vector? r))
-      (reduce-intersection l r)
+      (or (nil? l') (nil? r')) nil 
+      (and (vector? l') (vector? r'))
+      (reduce-intersection l' r')
+      (= l' r') l'
       :default
-      (reduce-sieve (Intersection. (reduce-sieve l) (reduce-sieve r)))))
+      (reduce-aggregate ->Intersection l' r'))))
   (normalize [s]
-    (Intersection. (normalize l) (normalize r))))
+    (Intersection. (normalize l) (normalize r)))
+  (period [s] 
+    (let [lr (reduce-sieve (normalize l))
+          rr (reduce-sieve (normalize r))
+          lp (period lr)
+          rp (period rr)]
+      (if (or (zero? lp) (zero? rp))
+        0
+        (* lp (quot rp (euclid lp rp)))))))
 
 (extend-type nil
   Sieve
   (element? [s n] false)  
   (reduce-sieve [s] nil)
-  (normalize [s] nil))
+  (normalize [s] nil)
+  (period [s] 0))
 
 (extend-type clojure.lang.PersistentVector 
   Sieve
@@ -125,7 +145,8 @@
   (reduce-sieve [s] s)
   (normalize [s] 
     (let [[m i] s] 
-      [m (mod i m)])))
+      [m (mod i m)]))
+  (period [[m i]] m))
 
 (defn U 
   "Create new sieve that is the union of sieves"
@@ -241,5 +262,8 @@
 #_(defn gen-sieve-period
   "Generate sequence using sieve. Only produces values for one period of the sieve."
   [sieve]
-  (let [rsieve (reduce-sieve sieve)]
-    (gen-sieve (:period analysis) sieve)))
+  (when-let [s (gen-sieve sieve)]
+    (let [[start & xs] s]
+      
+      )
+    ))
