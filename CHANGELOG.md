@@ -27,6 +27,9 @@ change log follows the conventions of
   * repeat-seq - Repeats a sequence x number of times. Returns a lazy sequence.
 * score.sieves
   * added period function to Sieves protocol to calculate period of sieve
+* score.ops
+  * new functions for operating on score blocks: translating and scaling in 
+  time, composing blocks together in series and parallel, repeating score.
 
 ## Changed
 

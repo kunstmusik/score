@@ -58,3 +58,29 @@ process-notes may not be enough. However, as note lists are
 generic list data structures, users can avail themselves of Clojure’s
 standard list processing functions to implement their own custom
 transformations.
+
+
+# Additional Operations
+
+score.ops provides additional score manipulation operations that do make
+assumptions about the structure of notes within a score, particularly that the
+2nd field is a start time and the 3rd field is a duration. (The use of start
+and duration as fields 2 and 3 correspond to usage in Music-N systems,
+particularly the pfield system in Csound.)
+
+The following operations are available:
+
+* sco-dur - Calculates score duration
+* |+| - Adjust start times (translates) for score
+* |\*| - Repeats score for given number of time, translating start times in
+  repeated parts.
+* |s| - Flattens given score blocks into a single score list, composing the
+  score blocks serially. Users can provide numbers in between score blocks to
+  advance score time (i.e., put space between notes).
+* |p| - Flattens given score blocks into a single score list, composing the
+  score blocks in parallel.  
+* |scale| - Scales start/dur for each note in score according to given 
+  multiplier.
+* |scale-to| - Scales start/dur for each note in score according to given 
+  target duration for entire score block.  
+
