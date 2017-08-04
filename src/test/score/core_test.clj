@@ -66,7 +66,10 @@
               3 [0 [[:b 0] [:b 1]]
                  2 [[:c 0] [:c 1]] ]
               ]
-             )))))
+             ))))
+  (testing "Passes through notelists"
+    (is (= [[:a 1]]
+           (convert-timed-score [[:a 1]])))))
 
 
 (deftest repeat-seq-test

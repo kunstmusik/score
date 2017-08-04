@@ -190,8 +190,8 @@
   is a single list that has the following shape:
 
   [ 0 list0 list1 
-    10 list0 
-    20 list0 list1]
+  10 list0 
+  20 list0 list1]
 
   Processes each value according the following rules:
 
@@ -206,31 +206,38 @@
   For example, list0 is played at times 0, 10, and 20,
   while list1 is played at times 0 and 20.  If list1 had only one note
   of [instr-func 0.0 1.0], then the generated score would have:
- 
+
   [[instr-func 0.0 1.0] [instr-func 20.0 1.0]] 
 
   This notation allows for organizing hierarchies of materials as lists
   of notes. Note, notes within note lists must be in the format of:
+
+  [instr-func start-time optional-args...]
   
-  [instr-func start-time optional-args...]"
+  This function will also return a score if it is not in timed-score format, which
+  in this case is tested by checking if the passed-in score is sequential and that
+  the first element is a number."
   [score]
-  (loop [[x & xs] score
-         cur-start 0.0
-         output []]
-    (if x
-      (cond 
-        (number? x) ;; new start-time 
-        (recur xs (double x) output)
+  (if (and (sequential? score)
+           (sequential? (first score))) 
+    score
+    (loop [[x & xs] score
+           cur-start 0.0
+           output []]
+      (if x
+        (cond 
+          (number? x) ;; new start-time 
+          (recur xs (double x) output)
 
-        (sequential? (first x)) ;; block of notes 
-        (recur xs cur-start (concat output (with-start cur-start x)))
+          (sequential? (first x)) ;; block of notes 
+          (recur xs cur-start (concat output (with-start cur-start x)))
 
-        (number? (first x)) ;; sub-timed-score
-        (recur xs cur-start (concat output (with-start cur-start 
-                                             (convert-timed-score x)))) 
-        :else ;; single note
-        (recur xs cur-start (concat output (with-start cur-start [x])))) 
-      output )))
+          (number? (first x)) ;; sub-timed-score
+          (recur xs cur-start (concat output (with-start cur-start 
+                                               (convert-timed-score x)))) 
+          :else ;; single note
+          (recur xs cur-start (concat output (with-start cur-start [x])))) 
+        output ))))
 
 ;; sequence utils
 
