@@ -33,6 +33,9 @@ change log follows the conventions of
 
 ## Changed
 
+* score.core
+  * convert-timed-score - in addition to single notes and note lists, now
+    allows sub-timed-scores to be used.
 * score.freq
   * keyword-\>notenum and related functions no longer support use of # to denote
     "sharps". Users must modify existing code to use "s" instead. For example,

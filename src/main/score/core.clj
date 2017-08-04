@@ -186,7 +186,7 @@
 
 
 (defn convert-timed-score
-  "Converts a timed score into a single score list. The measured-score
+  "Converts a timed score into a single score list. The timed-score
   is a single list that has the following shape:
 
   [ 0 list0 list1 
@@ -196,10 +196,12 @@
   Processes each value according the following rules:
 
   * If a number is found, set that as current start time in beats. 
-  * If a list is found, check if it is a single note or a list of notes. 
-    If it is a list of notes, adjust start time using with-start and 
-    current start-time.  If it is a single note, adjust
-    start time of the single note relative to the start-time given. 
+  * If a list is found, check if it is a single note, a list of notes, or a 
+  sub-timed-score.  If it is a list of notes, adjust start time using 
+  with-start and current start-time.  If it is a single note, adjust start time 
+  of the single note relative to the start-time given.  If it is a 
+  sub-timed-score, process with convert-timed-score, then adjust start time 
+  using with-start and current start-time. 
 
   For example, list0 is played at times 0, 10, and 20,
   while list1 is played at times 0 and 20.  If list1 had only one note
@@ -217,10 +219,15 @@
          output []]
     (if x
       (cond 
-        (number? x) ;; new measure
+        (number? x) ;; new start-time 
         (recur xs (double x) output)
-        (sequential? (first x)) ;; block of notes
+
+        (sequential? (first x)) ;; block of notes 
         (recur xs cur-start (concat output (with-start cur-start x)))
+
+        (number? (first x)) ;; sub-timed-score
+        (recur xs cur-start (concat output (with-start cur-start 
+                                             (convert-timed-score x)))) 
         :else ;; single note
         (recur xs cur-start (concat output (with-start cur-start [x])))) 
       output )))

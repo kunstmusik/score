@@ -44,6 +44,30 @@
 
 ;(println (convert-measured-score score))
 
+(deftest convert-timed-score-test
+  (testing "Simple timed-score"
+    (is (= [[:a 1.0] 
+          [:a 2.0]
+          [:b 3.0]
+          [:b 4.0]]
+         (convert-timed-score 
+           [1 [[:a 0] [:a 1]]
+            3 [[:b 0] [:b 1]] ]))))
+  (testing "Nested timed-score"
+    (is (= [[:a 1.0]
+            [:a 2.0]
+            [:b 3.0]
+            [:b 4.0]
+            [:c 5.0]
+            [:c 6.0]
+            ]
+           (convert-timed-score
+             [1 [[:a 0] [:a 1]]
+              3 [0 [[:b 0] [:b 1]]
+                 2 [[:c 0] [:c 1]] ]
+              ]
+             )))))
+
 
 (deftest repeat-seq-test
   (testing "repeat-seq"
