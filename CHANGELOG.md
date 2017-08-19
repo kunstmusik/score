@@ -37,9 +37,10 @@ change log follows the conventions of
   * convert-timed-score - in addition to single notes and note lists, now
     allows sub-timed-scores to be used.
 * score.freq
-  * keyword-\>notenum and related functions no longer support use of # to denote
-    "sharps". Users must modify existing code to use "s" instead. For example,
-    instead of :C#4, use :CS4. *Breaking Change*
+  * keyword-\>notenum and related functions now use "s" to notate sharps. 
+    "#" is still supported but is not guaranteed to work for keyword and symbols
+    into the future (depends upon whether Clojure language changes). For example,
+    now recommended to use :cs4 or :CS4 instead of :C#4. 
   * freq - updated to support strings and symbols.
 
 ## Fixed

@@ -17,10 +17,8 @@
     (is (= 61 (keyword->notenum :Cs4)))
     (is (= 70 (keyword->notenum :Bb4)))
     (is (= 70 (keyword->notenum :As4)))
-    )
-  (testing "# no longer supported as note modifier"
-    (is (thrown? Throwable (keyword->notenum :A#4))))
-  )
+    (is (= 70 (keyword->notenum :A#4)))
+    ))
 
 (deftest sym->notenum-test
   (testing "sym->notenum test"

@@ -22,7 +22,7 @@
            (case c
              \B (recur (+ v -1) (inc indx))
              \S (recur (+ v 1) (inc indx))
-             \# (throw (Throwable.  "# is no longer supported. Update code to use s instead."))
+             \# (recur (+ v 1) (inc indx))             
              (throw (Throwable. (str "Unknown note modifier: " c))))))))))
 
 (defn str->notenum
