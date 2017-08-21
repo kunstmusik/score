@@ -23,6 +23,7 @@ change log follows the conventions of
   * extracted str-\>notenum function to work with strings
   * added keynum as generalized function to convert value (string, symbol,
     keyword, PCH) to MIDI note number
+  * added cents-\>scaler and scaler-\>cents (translated from Common Music)
 * score.core
   * repeat-seq - Repeats a sequence x number of times. Returns a lazy sequence.
 * score.sieves

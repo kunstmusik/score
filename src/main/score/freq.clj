@@ -98,6 +98,21 @@
   (midi->freq (keynum a)))
 
 
+;; Cents
+(defn cents->scaler 
+	"Converts the cents into a scaler value 2^(cents/1200). 
+
+   Translated from Common Music."
+  [cents]
+	(Math/pow 2 (/ cents 1200.0)))
+
+(defn scaler->cents
+	"Converts a scaler into a cents value 1200*log2(ratio). 
+
+   Translated from Common Music."
+  [scalar]
+ 	(* 1200.0 (/ (Math/log scalar) (Math/log 2.0))))
+
 ;; functions related to PCH format: [oct pch]
 
 (defn pch-add  
@@ -166,3 +181,5 @@
               )
            (range (count pchs))
            pchs) )))
+
+
