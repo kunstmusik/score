@@ -67,7 +67,7 @@
    (create-accum-function genfn low high init mirror)))
 
 
-(defn wrap [v l h]
+(defn wrap 
   ; value, low, high, range
   [v l h]
   (let [r (- h l)]

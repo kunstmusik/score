@@ -132,8 +132,9 @@
   ([pch1 pch2 scale-degrees]
   (- (pch->notenum pch2 scale-degrees) (pch->notenum pch1 scale-degrees))))
 
-(defn pch->sco  [[a b]]
+(defn pch->sco  
   "Converts PCH notation to Csound-style pch string."
+  [[a b]] 
   (format "%d.%02d" a b ))
 
 (defn pch-interval-seq  
