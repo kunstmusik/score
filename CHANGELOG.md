@@ -6,7 +6,10 @@ change log follows the conventions of
 
 ## [Unreleased] 
 
-## Added
+
+## [0.4.0] - 2018-01-08
+
+### Added
 
 * score.lc
   * lc! - new symbol-list-based mini-language for score writing. Designed for
@@ -32,7 +35,7 @@ change log follows the conventions of
   * new functions for operating on score blocks: translating and scaling in 
   time, composing blocks together in series and parallel, repeating score.
 
-## Changed
+### Changed
 
 * score.core
   * convert-timed-score - in addition to single notes and note lists, now
@@ -44,7 +47,7 @@ change log follows the conventions of
     now recommended to use :cs4 or :CS4 instead of :C#4. 
   * freq - updated to support strings and symbols.
 
-## Fixed
+### Fixed
 
 * score.sieves
   * Intersections did not compute correctly when dealing with nil sieves, which 
@@ -73,3 +76,4 @@ change log follows the conventions of
 [Unreleased]: https://github.com/kunstmusik/score/compare/0.3.0...HEAD
 [0.2.0]: https://github.com/kunstmusik/score/compare/0.1.0...0.2.0
 [0.3.0]: https://github.com/kunstmusik/score/compare/0.2.0...0.3.0
+[0.4.0]: https://github.com/kunstmusik/score/compare/0.3.0...0.4.0

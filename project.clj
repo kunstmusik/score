@@ -1,4 +1,4 @@
-(defproject kunstmusik/score "0.4.0-SNAPSHOT"
+(defproject kunstmusik/score "0.4.0"
   :description "A generic library for musical score generation"
   :url "http://github.com/kunstmusik/score"
   :license {:name "Eclipse Public License"
