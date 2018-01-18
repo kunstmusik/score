@@ -1,4 +1,4 @@
-(defproject kunstmusik/score "0.4.0"
+(defproject kunstmusik/score "0.5.0-SNAPSHOT"
   :description "A generic library for musical score generation"
   :url "http://github.com/kunstmusik/score"
   :license {:name "Eclipse Public License"
@@ -8,7 +8,7 @@
   :profiles  { 
               :dev  {
                      :global-vars  {*warn-on-reflection* true} 
-                     :plugins [[lein-codox "0.9.6"]] 
+                     :plugins [[lein-codox "0.10.3"]] 
                      :source-paths ["src/demo"]
                      } 
 
