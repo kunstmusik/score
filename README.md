@@ -9,7 +9,7 @@ This library contains functions for various approaches to score generation. It
 is made in a generic fashion so as to work with multiple approaches to 
 modeling scores, as well as working with multiple backends. 
 
-For more information, please see the [website](http://kunstmusik.github.com/score). 
+For more information, please see the [website](http://kunstmusik.github.io/score). 
 
 Documentation provided within the [doc](doc/intro.md) folder.
 
